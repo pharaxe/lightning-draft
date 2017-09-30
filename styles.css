@@ -16,5 +16,15 @@
    height: 100%;
 }
 
-#cube {
+#links { 
+   width: 53%;
+}
+
+#cubelink {
+   position: relative;
+   float: right;
+}
+
+#sheet {
+
 }
