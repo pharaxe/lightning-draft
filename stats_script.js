@@ -22,7 +22,12 @@ StatsManager = new Class({
                boardColor: '#000000'
 
             }]
-         }
+         },
+          options: {
+             responsive: true,
+             maintainAspectRatio: false
+
+          }
       });
    },
 
@@ -51,7 +56,13 @@ StatsManager = new Class({
                ],
                 boarderWidth: 1
             }]
-         }
+         },
+          options: {
+             responsive: true,
+             maintainAspectRatio: false
+
+          }
+
       });
    },
 
@@ -84,6 +95,7 @@ StatsManager = new Class({
                 boarderWidth: 1
             }]
          }
+
       });
    },
 

@@ -1,122 +1,74 @@
+<?php
+?>
 <html>
 <head>
    <link rel="stylesheet" href="styles.css">
+   <script src="Chart.min.js"></script>
+   <script src="MooTools-Core-1.6.0.js"></script>
+   <script src="MooTools-More-1.6.0.js"></script>
+   <script src="stats_script.js"></script>
 </head>
 <body>
+
 <?php
+$filename = 'peasant_cube_stats.json';
+$fp = fopen($filename, 'r');
+$json_data = fread($fp, filesize($filename));
+$data = json_decode($json_data);
 
-require __DIR__ . '/vendor/autoload.php';
+echo '<section id="data" data-stats="'
+   . htmlspecialchars($json_data,ENT_QUOTES, 'UTF-8')
+   . '"></section>';
 
-$published_sheet = "http://docs.google.com/spreadsheets/d/e/2PACX-1vSw505SA4teYRUl7tqpmdaLMHDCgzzZ7dNG3LgR3cIGKcAbp0UM932JjQrxZzi_9NHzNqpPsj9ffXuO/pub?gid=0&single=true&output=csv";
+echo '<h1>Peasant Cube Rotisserie Draft Stats</h1>';
+echo 'Updated on ' . $data->date . '<br/>';
+echo 'Draft Completion: ' . (int)($data->total_card_count / 336 * 100).  '%<br/>';
+//echo 'Multicolored picks: ' . $data->multicolored_picks . '<br/>';
+?>
+<div class="charts">
+<h2>Spell Colors</h2>
+<canvas width="400" height="400" class="chart" id="colorChart" ></canvas>
+</div>
 
 
-$user_request = $_SERVER['REQUEST_URI'];
-$url = $published_sheet;
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,$url);
-curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_HEADER, 0);
-$curl_scraped_page = curl_exec($ch);
-curl_close($ch);
+<div class="charts">
+<h2>Card Types</h2>
+<canvas width="400" height="400" class="chart" id="typeChart" ></canvas>
+</div>
 
-$data = str_getcsv($curl_scraped_page, "\n");
-foreach ($data as &$row) $row = str_getcsv($row);
+<div class="charts">
+<h2>Converted Mana Cost</h2>
+<canvas width="400" height="400" class="chart" id="cmcChart" ></canvas>
+</div>
 
-// trim the beginning and end of the rows
-foreach ($data as &$row) {
-   array_shift($row);
-   array_pop($row);
-}
-
-unset($data[21]); // get rid of double pick reminder.
-unset($data[0]); // get rid of column headers.
-
-$picks = array();
-foreach ($data as $row) {
-   foreach ($row as $cell) {
-      if (!empty($cell)) {
-         $picks[] = $cell;
-      }
-   }
-}
-
-$color_count = array(
- 'White' => 0,
- 'Blue' => 0,
- 'Black' => 0,
- 'Red' => 0,
- 'Green' => 0,
- 'Colorless' => 0
- );
-
-$type_count = array();
-
-$cmc_count = array();
-$multicolored_count = 0;
-
-$total_card_count = count($picks);
-foreach ($picks as $pick) {
-   $cards = mtgsdk\Card::where(['name' => $pick])->all();
-   $card = $cards[0];
-
-   // color pie stats.
-   if (isset($card->colors)) {
-      $colors = $card->colors;
-      foreach ($colors as $color) {
-         $color_count[$color]++;
-      }
-      if (count($colors) > 1) {
-         $multicolored_count++;
-      }
-   } else {
-      if (!in_array('Land', $card->types)) { // exclude land picks
-         $color_count['Colorless']++;
+<div class="charts">
+<h2>Color Identities (WIP)</h2>
+<table id="color_identities">
+<?php
+foreach ($data->color_identities as $ndx => $pick) {
+   if ($ndx % 8 == 0)  {
+      echo '<tr>';
+      $picks_left = $data->total_card_count - $ndx;
+      if ($picks_left < 8) {
+         // final row
+         $y = (int) $ndx / 8;
+         if ($y % 2 != 0) {
+            $padding = 8 - $picks_left;   
+            for ($p = 0; $p <$padding; $p++) {
+               echo '<td class="padding"></td>';
+            }
+         }
       }
    }
 
+   echo '<td class="pick ' . $pick . '"></td>';
 
-   // Mana curve stats.
-   $cmc = $card->cmc; 
-   if (isset($cmc_count[$cmc])) {
-      $cmc_count[$cmc]++;
-   } else {
-      $cmc_count[$cmc] = 1;
-   }
-
-   //supertype stats
-   $types = $card->types;
-   foreach($types as $type) {
-      if (isset($type_count[$type])) {
-         $type_count[$type]++;
-      } else {
-         $type_count[$type] = 1;
-      }
-   }
+   if ($ndx % 8 == 7 || $ndx == $data->total_card_count -1)
+      echo '</tr>';
 }
+?>
+</table>
+</div>
 
-ksort($cmc_count);
-
-echo '<h1>Stats</h1>';
-echo 'Picks: ' . $total_card_count . '<br/>';
-echo 'Multicolored picks: ' . $multicolored_count . '<br/>';
-echo '<h2>Spell Colors</h2>';
-echo '<ul>';
-foreach ($color_count as $color => $amount) {
-   echo '<li>' . $color . ': ' . $amount . '</li>';
-}
-echo '</ul>';
-
-echo '<h2>Converted Mana Cost</h2>';
-echo '<ul>';
-foreach ($cmc_count as $cmc => $amount) {
-   echo '<li>' . $cmc . ': ' . $amount . '</li>';
-}
-echo '</ul>';
-
-echo '<h2>Card Types</h2>';
-echo '<ul>';
-foreach ($type_count as $type => $amount) {
-   echo '<li>' . $type . ': ' . $amount . '</li>';
-}
-echo '</ul>';
+</body>
+</html>
