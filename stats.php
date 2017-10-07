@@ -42,29 +42,32 @@ echo 'Draft Completion: ' . (int)($data->total_card_count / 336 * 100).  '%<br/>
 </div>
 
 <div class="charts">
-<h2>Color Identities (WIP)</h2>
+<h2>Color Identities</h2>
 <table id="color_identities">
 <?php
 foreach ($data->color_identities as $ndx => $pick) {
-   if ($ndx % 8 == 0)  {
-      echo '<tr>';
-      $picks_left = $data->total_card_count - $ndx;
-      if ($picks_left < 8) {
-         // final row
-         $y = (int) $ndx / 8;
-         if ($y % 2 != 0) {
-            $padding = 8 - $picks_left;   
-            for ($p = 0; $p <$padding; $p++) {
-               echo '<td class="padding"></td>';
+   if ($ndx < 24*8) { // TODO make it work for picks past 160
+
+      if ($ndx % 8 == 0)  {
+         echo '<tr>';
+         $picks_left = $data->total_card_count - $ndx;
+         if ($picks_left < 8) {
+            // final row
+            $y = (int) $ndx / 8;
+            if ($y % 2 != 0) {
+               $padding = 8 - $picks_left;   
+               for ($p = 0; $p <$padding; $p++) {
+                  echo '<td class="padding"></td>';
+               }
             }
          }
       }
+
+      echo '<td class="pick ' . $pick . '"></td>';
+
+      if ($ndx % 8 == 7 || $ndx == $data->total_card_count -1)
+         echo '</tr>';
    }
-
-   echo '<td class="pick ' . $pick . '"></td>';
-
-   if ($ndx % 8 == 7 || $ndx == $data->total_card_count -1)
-      echo '</tr>';
 }
 ?>
 </table>
