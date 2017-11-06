@@ -1,1 +1,6 @@
 vendor
+var/cache/*
+var/logs/*
+var/sessions/*
+app/config/symfony_demo
+*.swp
