@@ -8,14 +8,14 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="cards")
  */
-class Card 
+class Card
 {
    /**
     * @ORM\Column(type="integer", name="cardid")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
-   private $id
+   private $id;
 
    /**
     * @ORM\Column(type="string", length=255)
@@ -48,63 +48,63 @@ class Card
    private $ability;
 
 
-   public getId() {
+   public function getId() {
       return $this->id;
    }
 
-   public getName() {
+   public function getName() {
       return $this->name;
    }
 
-   public setName($name) {
-      $this->name = $name
+   public function setName($name) {
+      $this->name = $name;
    }
 
-   public getManaCost() {
+   public function getManaCost() {
       return $this->manaCost;
    }
 
-   public setManaCost($mana) {
+   public function setManaCost($mana) {
       $this->manaCost = $mana;
    }
 
-   public getCMC() {
+   public function getCMC() {
       return $this->cmc;
    }
 
-   public setCMC($cmc) {
+   public function setCMC($cmc) {
       $this->cmc = $cmc;
    }
 
-   public getToughness() {
+   public function getToughness() {
       return $this->toughness;
    }
 
-   public setToughness($tough) {
+   public function setToughness($tough) {
       $this->toughness = $tough;
    }
 
-   public getPower() {
+   public function getPower() {
       return $this->power;
    }
 
-   public setPower($pow) {
+   public function setPower($pow) {
       $this->Power = $pow;
    }
 
-   public getAbility() {
+   public function getAbility() {
       return $this->ability;
    }
 
-   public setAbility($text) {
+   public function setAbility($text) {
       $this->ability = $text;
    }
 
-   public getLegendary() {
+   public function getLegendary() {
       return $this->legendary;
    }
 
-   public setLegendary($legendaryFlag) {
+   public function setLegendary($legendaryFlag) {
       $this->legendary = $legendaryFlag;
    }
 }
