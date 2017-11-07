@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrin\Coommon\Collections\ArrayCollection;
+
 
 /**
  * @ORM\Entity
@@ -23,30 +25,62 @@ class Card
    private $name;
 
    /**
-    * ORM\Column(type="string", length=100, name="mana_cost")
+    * @ORM\Column(type="string", length=100, name="mana_cost")
     */
    private $manaCost;
 
    /**
-    * ORM\Column(type="integer")
+    * @ORM\Column(type="integer")
     */
    private $cmc;
 
    /**
-    * ORM\Column(type="integer")
+    * @ORM\Column(type="integer")
     */
    private $power;
 
    /**
-    * ORM\Column(type="integer")
+    * @ORM\Column(type="integer")
     */
    private $toughness;
 
    /**
-    * ORM\Column(type="string", name="ability")
+    * @ORM\Column(type="text", name="ability")
     */
    private $ability;
 
+   /**
+    * @ORM\ManyToMany(targetEntity="Color", cascade={"persist"})
+    * @ORM\JoinTable(name="cards_colors",
+    *    joinColumns={@ORM\JoinColumn(name="cardid", referencedColumnName="cardid")},
+    *    inverseJoinColumns={@ORM\JoinColumn(name="colorid", referencedColumnName="colorid")}
+    *    )
+    */
+   private $colors;
+
+   /**
+    * @ORM\ManyToMany(targetEntity="Type", cascade={"persist"})
+    * @ORM\JoinTable(name="cards_types",
+    *    joinColumns={@ORM\JoinColumn(name="cardid", referencedColumnName="cardid")},
+    *    inverseJoinColumns={@ORM\JoinColumn(name="typeid", referencedColumnName="typeid")}
+    *    )
+    */
+   private $types;
+
+   /**
+    * @ORM\ManyToMany(targetEntity="Color", cascade={"persist"})
+    * @ORM\JoinTable(name="cards_identities",
+    *    joinColumns={@ORM\JoinColumn(name="cardid", referencedColumnName="cardid")},
+    *    inverseJoinColumns={@ORM\JoinColumn(name="colorid", referencedColumnName="colorid")}
+    *    )
+    */
+   private $identities;
+
+   public function __construct() {
+      $this->colors = new \Doctrine\Common\Collections\ArrayCollection();
+      $this->types = new \Doctrine\Common\Collections\ArrayCollection();
+      $this->identities = new \Doctrine\Common\Collections\ArrayCollection();
+   }
 
    public function getId() {
       return $this->id;
@@ -68,11 +102,11 @@ class Card
       $this->manaCost = $mana;
    }
 
-   public function getCMC() {
+   public function getCmc() {
       return $this->cmc;
    }
 
-   public function setCMC($cmc) {
+   public function setCmc($cmc) {
       $this->cmc = $cmc;
    }
 
@@ -106,5 +140,34 @@ class Card
 
    public function setLegendary($legendaryFlag) {
       $this->legendary = $legendaryFlag;
+   }
+
+   public function addColor($color) {
+      if (!$this->colors->contains($color)) {
+         $this->colors->add($color);
+      }
+   }
+
+   public function addIdentity($color) {
+      if (!$this->identities->contains($color)) {
+         $this->identities->add($color);
+      }
+   }
+
+   public function addType($type) {
+      if (!$this->types->contains($type)) {
+         $this->types->add($type);
+      }
+   }
+
+   public function getColors() {
+      return $this->colors;
+   }
+
+   public function getIdentities() {
+      return $this->identities;
+   }
+   public function getTypes() {
+      return $this->types;
    }
 }

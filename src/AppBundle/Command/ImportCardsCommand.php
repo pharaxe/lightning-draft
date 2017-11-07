@@ -9,6 +9,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use AppBundle\Entity\Card;
+use Symfony\Component\Config\FileLocator;
+use Symfony\Component\Config\Loader\FileLoader;
 
 class ImportCardsCommand extends ContainerAwareCommand
 {
@@ -22,24 +24,17 @@ class ImportCardsCommand extends ContainerAwareCommand
 
    protected function execute(InputInterface $input, OutputInterface $output)
    {
-$filename = "AllCards.json";
-$handle = fopen($filename, "r");
-$allCards = fread($handle, filesize($filename));
-$cards = json_decode($allCards);
-fclose($handle);
 
-$errHandle = fopen("import_errors.txt", "w");
+      $jsonFileDirectory = array(__DIR__);
+      $locator = new FileLocator($jsonFileDirectory);
+      $files = $locator->locate('AllCards.json', null, false);
 
-      $doctrine = $this->getContainer()->get('doctrine');
-      $em = $doctrine->getEntityManager();
+      $content = file_get_contents($files[0]);
+      $cards = json_decode($content);
 
-      $card = new Card();
-      $card->setName('Nidoran');
+      $cardManager = $this->getContainer()->get('AppBundle\Service\CardLibrary');
 
-      $em->persist($card);
-      $em->flush();
+      $cardManager->updateCards($cards);
 
-
-      $output->writeln('testing');
    }
 }
