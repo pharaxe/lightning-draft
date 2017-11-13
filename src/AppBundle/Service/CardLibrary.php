@@ -3,7 +3,9 @@
 // src/AppBundle/Service/CardLibrary.php
 namespace AppBundle\Service;
 
+use \DateTime;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -11,6 +13,8 @@ use Symfony\Component\DependencyInjection\Container;
 use AppBundle\Entity\Card;
 use AppBundle\Entity\Color;
 use AppBundle\Entity\Type;
+use AppBundle\Entity\Set;
+use AppBundle\Entity\Art;
 
 class CardLibrary
 {
@@ -22,6 +26,23 @@ class CardLibrary
       $this->em = $entityManager;
       $this->container = $container;
 
+   }
+
+   public function searchCards($search) {
+
+      $db = $this->em->getRepository(Card::class);
+
+      $qb = $db->createQueryBuilder('c');
+
+      $qb->where("c.name LIKE ?1") 
+         ->setMaxResults(10)
+         ->setParameter(1, "%" . $search ."%");
+
+      $query = $qb->getQuery();
+
+      $result = $query->getResult();
+
+      return $result;
    }
 
    public function updateCards($cards) 
@@ -164,5 +185,89 @@ class CardLibrary
       }
 
       $this->em->flush();
+   }
+
+   public function updateSets($data) {
+      foreach ($data as $set) {
+         $this->updateSet($set);
+      }
+
+      $this->em->flush();
+   }
+
+   public function updateSet($data) {
+      // see if the set is in the database
+      $set = $this->em->getRepository(Set::class)->findOneByName($data->name);
+
+      if ($set == null) {
+         $set = new Set(); 
+         echo 'inserting ' . $data->name . "\n";
+      } else {
+         echo 'updating ' . $data->name . "\n";
+      }
+
+      $set->setName($data->name);
+      $set->setCode($data->code);
+      $date = DateTime::createFromFormat('Y-m-d', $data->releaseDate); 
+      if ($date == null) {
+         echo DateTime::getLastErrors();
+      }
+
+      $set->setReleaseDate($date);
+
+      $this->em->persist($set);
+   }
+
+   public function assignArts($data) {
+      // turn off query logging so we don't run out of memory during this script.
+      $this->em->getConnection()->getConfiguration()->setSQLLogger(null);
+
+      foreach ($data as $setData) {
+         $set = $this->em->getRepository(Set::class)->findOneByCode($setData->code);
+
+         if ($set == null) {
+            echo "Couldn't find set in database for " . $setData->code . "\n";
+            return;
+         }
+
+         $artsToAssign = $setData->cards; 
+         foreach ($artsToAssign as $artData) {
+            if (!isset($artData->multiverseid))  {
+               // this is a card token, don't put in DB
+               continue;
+            }
+
+            $art = $this->em->getRepository(Art::class)->findOneByMultiverseid($artData->multiverseid);
+
+            if ($art == null) {
+               $art = new Art();
+               echo 'inserting ' . $artData->name . "\n";
+            } else {
+               echo 'updating ' . $artData->name . "\n";
+            }
+
+            $card = $this->em->getRepository(Card::class)->findOneByName($artData->name);
+
+            if ($card == null) {
+               echo "Couldn't find card for art: " . $artData->name . "\n";
+               continue;
+            }
+
+            $art->setMultiverseid($artData->multiverseid);
+            $art->setArtist($artData->artist);
+            $art->setRarity($artData->rarity);
+
+            // TODO find out URL
+
+            $art->setSet($set);
+            $art->setCard($card);
+
+            $this->em->persist($art);
+            $this->em->flush();
+         }
+      }
+
+
+
    }
 }

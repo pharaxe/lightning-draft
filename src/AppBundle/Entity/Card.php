@@ -76,10 +76,17 @@ class Card
     */
    private $identities;
 
+   /**
+    * @ORM\OneToMany(targetEntity="Art", mappedBy="card")
+    */
+   private $arts;
+
+
    public function __construct() {
       $this->colors = new \Doctrine\Common\Collections\ArrayCollection();
       $this->types = new \Doctrine\Common\Collections\ArrayCollection();
       $this->identities = new \Doctrine\Common\Collections\ArrayCollection();
+      $this->arts = new ArrayCollection();
    }
 
    public function getId() {
@@ -169,5 +176,13 @@ class Card
    }
    public function getTypes() {
       return $this->types;
+   }
+
+   public function addArt($art) {
+      $this->arts->add($art);
+   }
+
+   public function getArts() {
+      return $this->arts;
    }
 }

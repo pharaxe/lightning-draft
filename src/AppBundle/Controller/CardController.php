@@ -1,25 +1,40 @@
 <?php
-
+// src/AppBundle/Controller/CardController.php
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-class CardController 
+class CardController extends Controller
 {
     /**
      * @Route("/card")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         // replace this example code with whatever you need
-       $number = mt_rand(0, 100);
+       $term = $request->query->get('name');
 
-        return new Response(
-           '<html><body>Lucky number: '.$number.'</body></html>'
-        );
+       if ($term == null) {
+          $term = 'Mox';
+       }
+
+       $cardManager = $this->get('AppBundle\Service\CardLibrary');
+       $cards = $cardManager->searchCards($term);
+
+       $ret = array(); 
+       foreach ($cards as $card) {
+          $ret[] = array('id' => $card->getId(), 'name' => $card->getName());
+       }
+
+       $response = new JsonResponse($ret);
+
+       $response->headers->set('Access-Control-Allow-Origin', 'http://bensweedler.com:4200');
+
+       return $response;
     }
 }
