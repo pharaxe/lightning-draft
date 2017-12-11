@@ -15,6 +15,7 @@ use AppBundle\Entity\Color;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Set;
 use AppBundle\Entity\Art;
+use Symfony\Component\Config\FileLocator;
 
 class CardLibrary
 {
@@ -237,6 +238,16 @@ class CardLibrary
                continue;
             }
 
+            $validRarities = array('Common', 'Uncommon', 'Rare', 'Mythic Rare');
+            if (!isset($artData->rarity) || !in_array($artData->rarity, $validRarities))  {
+               // this is a basic land, don't put in DB
+               continue;
+            } else {
+               if ($artData->rarity == 'Mythic Rare') {
+                  $artData->rarity = 'mythic'; // hack
+               }
+            }
+
             $art = $this->em->getRepository(Art::class)->findOneByMultiverseid($artData->multiverseid);
 
             if ($art == null) {
@@ -257,17 +268,18 @@ class CardLibrary
             $art->setArtist($artData->artist);
             $art->setRarity($artData->rarity);
 
-            // TODO find out URL
-
+            $art->setUrl($set->getCode() . '/' . $art->getMultiverseid());
             $art->setSet($set);
             $art->setCard($card);
 
             $this->em->persist($art);
             $this->em->flush();
+            $this->em->detach($art);
+            $art = null;
+            unset($art);
+            $this->em->clear();
          }
       }
-
-
-
    }
+
 }

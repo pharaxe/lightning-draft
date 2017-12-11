@@ -33,6 +33,7 @@ class AssignArtsCommand extends ContainerAwareCommand
 
       $cardManager = $this->getContainer()->get('AppBundle\Service\CardLibrary');
 
+      $cardManager->updateSets($cards);
       $cardManager->assignArts($cards);
 
    }

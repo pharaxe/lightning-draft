@@ -185,4 +185,12 @@ class Card
    public function getArts() {
       return $this->arts;
    }
+
+   public function getMiddleArt() {
+      $numberOfPrintings = count($this->getArts());
+
+      $middle = (int) ceil($numberOfPrintings / 2);
+
+      return $this->arts[$middle - 1];
+   }
 }

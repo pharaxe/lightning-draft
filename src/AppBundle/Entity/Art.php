@@ -27,6 +27,11 @@ class Art
    /**
     * @ORM\Column(type="string", length=255)
     */
+   private $url;
+
+   /**
+    * @ORM\Column(type="string", length=255)
+    */
    private $rarity;
 
    /**
@@ -35,13 +40,13 @@ class Art
    private $multiverseid;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Card", inversedBy="arts")
+    * @ORM\ManyToOne(targetEntity="Card", inversedBy="arts", cascade="persist")
     * @ORM\JoinColumn(name="cardid", referencedColumnName="cardid")
     */
    private $card;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Set")
+    * @ORM\ManyToOne(targetEntity="Set", cascade="persist")
     * @ORM\JoinColumn(name="setid", referencedColumnName="setid")
     */
    private $set;
@@ -56,6 +61,14 @@ class Art
 
    public function setArtist($artistName) {
       $this->artist = $artistName;
+   }
+
+   public function getUrl() {
+      return $this->url;
+   }
+
+   public function setUrl($url) {
+      $this->url = $url;
    }
 
    public function getRarity() {
@@ -88,5 +101,9 @@ class Art
 
    public function setSet($set) {
       $this->set = $set;
+   }
+
+   public function getFullURL() {
+      return "http://bensweedler.com/art/" . $this->getUrl() . ".jpg";
    }
 }

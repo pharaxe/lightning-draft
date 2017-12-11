@@ -28,7 +28,13 @@ class CardController extends Controller
 
        $ret = array(); 
        foreach ($cards as $card) {
-          $ret[] = array('id' => $card->getId(), 'name' => $card->getName());
+          $art = $card->getMiddleArt();
+
+          $ret[] = array(
+             'id' => $card->getId(), 
+             'name' => $card->getName(), 
+             'url' => $art->getFullUrl(),
+             'multiverseid' => $art->getMultiverseid());
        }
 
        $response = new JsonResponse($ret);
