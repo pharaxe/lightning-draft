@@ -8,12 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="cards")
+ * @ORM\Table(name="drafts")
  */
-class Card
+class Draft
 {
    /**
-    * @ORM\Column(type="integer", name="cardid")
+    * @ORM\Column(type="integer", name="draftid")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
@@ -25,9 +25,9 @@ class Card
    private $name;
 
    /**
-    * @ORM\Column(type="string", length=100, name="mana_cost")
+    * @ORM\Column(type="integer", name="cubeid")
     */
-   private $manaCost;
+   private $cubeid;
 
    /**
     * @ORM\Column(type="integer")

@@ -39,7 +39,7 @@ class CardController extends Controller
 
        $response = new JsonResponse($ret);
 
-       $response->headers->set('Access-Control-Allow-Origin', 'http://bensweedler.com:4200');
+       $response->headers->set('Access-Control-Allow-Origin', '*');
 
        return $response;
     }
