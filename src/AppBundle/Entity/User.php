@@ -8,12 +8,12 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="drafts")
+ * @ORM\Table(name="users")
  */
-class Draft
+class User
 {
    /**
-    * @ORM\Column(type="integer", name="draftid")
+    * @ORM\Column(type="integer", name="playerid")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
@@ -25,12 +25,7 @@ class Draft
    private $name;
 
    /**
-    * @ORM\Column(type="string", length=255)
-    */
-   private $status;
-
-   /**
-    * @ORM\OneToMany(targetEntity="Player", mappedBy="draft")
+    * @ORM\OneToMany(targetEntity="Player", inversedBy="player")
     */
    private $players;
 
@@ -53,14 +48,5 @@ class Draft
 
    public function getPlayers() {
       return $this->players;
-   }
-
-   public function addPlayer($user) {
-      $player = new Player();
-
-      $player->setUser($user);
-      $player->setDraft($this);
-
-      $this->players->add($player);
    }
 }
