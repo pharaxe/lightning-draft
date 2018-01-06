@@ -20,19 +20,19 @@ class Pick
    private $id;
 
    /**
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer", name="`order`")
     */
    private $order;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Art", inversedBy="pick")
-    * @JoinColumn(name="artid", referencedColumnName="artid")
+    * @ORM\ManyToOne(targetEntity="Art", inversedBy="pick", cascade="persist")
+    * @ORM\JoinColumn(name="artid", referencedColumnName="artid")
     */
    private $art;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Pool", inversedBy="pick")
-    * @JoinColumn(name="poolid", referencedColumnName="poolid")
+    * @ORM\ManyToOne(targetEntity="Pool", inversedBy="pick", cascade={"all"})
+    * @ORM\JoinColumn(name="poolid", referencedColumnName="poolid")
     */
    private $pool;
 

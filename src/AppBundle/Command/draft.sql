@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `picks` (
    `pickid` INTEGER NOT NULL AUTO_INCREMENT,
    `poolid` INTEGER NOT NULL,
    `artid` INTEGER NOT NULL,
-   `order` INTEGER,
+   `order` INTEGER DEFAULT NULL,
    FOREIGN KEY (`poolid`) REFERENCES `pools`(`poolid`),
    FOREIGN KEY (`artid`) REFERENCES `arts`(`artid`),
    PRIMARY KEY (`pickid`)

@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 class User
 {
    /**
-    * @ORM\Column(type="integer", name="playerid")
+    * @ORM\Column(type="integer", name="userid")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
@@ -25,7 +25,8 @@ class User
    private $name;
 
    /**
-    * @ORM\OneToMany(targetEntity="Player", inversedBy="player")
+    * @ORM\OneToMany(targetEntity="Player", mappedBy="player")
+    * @ORM\JoinColumn(name="playerid", referencedColumnName="playerid")
     */
    private $players;
 

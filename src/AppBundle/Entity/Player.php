@@ -26,19 +26,19 @@ class Player
 
    /**
     * @ORM\ManyToOne(targetEntity="Draft", inversedBy="player")
-    * @JoinColumn(name="draftid", referencedColumnName="draftid")
+    * @ORM\JoinColumn(name="draftid", referencedColumnName="draftid")
     */
    private $draft;
 
    /**
     * @ORM\ManyToOne(targetEntity="User", inversedBy="player")
-    * @JoinColumn(name="userid", referencedColumnName="userid")
+    * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
     */
    private $user;
 
    /**
-    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player")
-    * @JoinColumn(name="poolid", referencedColumnName="poolid")
+    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
+    * @ORM\JoinColumn(name="poolid", referencedColumnName="poolid")
     */
    private $pool;
 

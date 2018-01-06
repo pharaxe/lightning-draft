@@ -13,14 +13,15 @@ use Doctrine\Common\Collections\ArrayCollection;
 class Pool
 {
    /**
-    * @ORM\Column(type="integer", name="pickid")
+    * @ORM\Column(type="integer", name="poolid")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
     */
    private $id;
 
    /**
-    * @ORM\OneToMany(targetEntity="Picks", inversedBy="pick")
+    * @ORM\OneToMany(targetEntity="Pick", mappedBy="pool", cascade={"persist"})
+    * @ORM\JoinColumn(name="poolid", referencedColumnName="poolid")
     */
    private $picks;
 
