@@ -2,6 +2,9 @@
 // src/AppBundle/Controller/CardController.php
 namespace AppBundle\Controller;
 
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,12 +12,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-class CardController extends Controller
+class CardController extends FOSRestController
 {
-    /**
-     * @Route("/card")
-     */
-    public function indexAction(Request $request)
+    public function getAction(Request $request)
     {
        $term = $request->query->get('name');
 

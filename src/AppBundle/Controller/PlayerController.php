@@ -1,5 +1,5 @@
 <?php
-// src/AppBundle/Controller/DraftController.php
+// src/AppBundle/Controller/PlayerController.php
 namespace AppBundle\Controller;
 
 use FOS\RestBundle\Controller\FOSRestController;
@@ -12,35 +12,23 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Art;
 use AppBundle\Entity\Player;
+use AppBundle\Entity\Draft;
 
-class DraftController extends FOSRestController
+class PlayerController extends FOSRestController
 {
-   
-    public function getDraftAction($draftURI)
+    public function getPlayerAction($draftURI, $playerURI)
     {
-       $response = "hello";
 
        return $response;
     }
 
-
-    /**
-     * list of drafts a user is participating or invited to.
-     **/
-    public function getDraftsAction() {
-
-    }
-
-    /**
-     * When a user creates a new draft.
-     */
-    public function postDraftAction() {
+    public function putPlayerAction($draftURI) {
 
     }
 
 
     /*
-    public function getPlayerAction($playerid) {
+    public function getPickAction($id) {
        $player = $this->getDoctrine()
           ->getRepository(Player::class)
           ->find($playerid);
@@ -65,3 +53,4 @@ class DraftController extends FOSRestController
     }
      */
 }
+
