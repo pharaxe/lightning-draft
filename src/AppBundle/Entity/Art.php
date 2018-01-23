@@ -104,6 +104,6 @@ class Art
    }
 
    public function getFullURL() {
-      return "http://bensweedler.com/art/" . $this->getUrl() . ".jpg";
+      return "http://bensweedler.com/art/" . $this->getMultiverseid() . ".jpg";
    }
 }
