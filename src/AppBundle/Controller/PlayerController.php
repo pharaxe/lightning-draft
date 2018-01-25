@@ -13,16 +13,40 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Art;
 use AppBundle\Entity\Player;
 use AppBundle\Entity\Draft;
+use AppBundle\Entity\User;
 
 class PlayerController extends FOSRestController
 {
-    public function getPlayerAction($draftURI, $playerURI)
+    public function getPlayerAction($draftID, $playerID)
     {
+       $player = $this->getDoctrine()
+          ->getRepository(Player::class)
+          ->findOneById($playerID);
 
-       return $response;
+       return $player;
     }
 
-    public function putPlayerAction($draftURI) {
+    public function putPlayerAction($draftID) {
+       
+       $draft = $this->getDoctrine()
+          ->getRepository(Draft::class)
+          ->findOneById($draftID);
+
+       return $draft;
+
+       $user = $this->getDoctrine()
+          ->getRepository(User::class)
+          ->findOneById(1);
+
+
+       $player = $draft->addPlayer($user);
+
+
+       /*
+       $this->getDoctrine()
+          ->getManager()
+          ->persist($draft);
+        */
 
     }
 

@@ -13,8 +13,12 @@ players:
    parent: drafts
    resource: AppBundle\Controller\PlayerController
 
-
 picks:
    parent: players
    type: rest
    resource: AppBundle\Controller\PickController
+
+pack:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\PackController

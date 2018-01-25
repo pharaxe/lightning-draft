@@ -30,7 +30,7 @@ class Draft
    private $status;
 
    /**
-    * @ORM\OneToMany(targetEntity="Player", mappedBy="draft", cascade={"persist"})
+    * @ORM\OneToMany(targetEntity="Player", mappedBy="player", cascade={"persist"})
     * @ORM\JoinColumn(name="playerid", referencedColumnName="playerid")
     */
    private $players;
@@ -56,12 +56,18 @@ class Draft
       return $this->players;
    }
 
+   /**
+    * @return the resulting Player from adding the user to the draft. 
+    **/
    public function addPlayer($user) {
+      // TODO check to see if user is already in the draft
       $player = new Player();
 
       $player->setUser($user);
       $player->setDraft($this);
 
       $this->players->add($player);
+
+      return $player;
    }
 }

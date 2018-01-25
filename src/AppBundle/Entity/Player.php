@@ -38,12 +38,26 @@ class Player
 
    /**
     * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
-    * @ORM\JoinColumn(name="poolid", referencedColumnName="poolid")
+    * @ORM\JoinColumn(name="picksid", referencedColumnName="poolid")
     */
-   private $pool;
+   private $picks;
+
+   /**
+    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
+    * @ORM\JoinColumn(name="packid", referencedColumnName="poolid")
+    */
+   private $pack;
+
+   /**
+    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
+    * @ORM\JoinColumn(name="passid", referencedColumnName="poolid")
+    */
+   private $pass;
 
    public function __construct() {
-      $this->pool = new Pool();
+      $this->picks = new Pool();
+      $this->pass = new Pool();
+      $this->pack = new Pool();
    }
 
    public function getId() {
@@ -58,12 +72,20 @@ class Player
       $this->name = $name;
    }
 
-   public function getPool() {
-      return $this->pool;
+   public function getPicks() {
+      return $this->picks;
+   }
+
+   public function getPack() {
+      return $this->pack;
+   }
+
+   public function getPass() {
+      return $this->pass;
    }
 
    public function draftArt($art) {
-      $this->pool->addArt($art);
+      $this->picks->addArt($art);
    }
 
    public function getUser() {

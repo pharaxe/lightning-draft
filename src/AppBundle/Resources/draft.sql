@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS `drafts` (
 
 CREATE TABLE IF NOT EXISTS `pools` (
    `poolid` INTEGER NOT NULL AUTO_INCREMENT,
+   `ordered` BOOLEAN DEFAULT FALSE,
    PRIMARY KEY (`poolid`)
 )engine=innodb default character set=utf8;
 
@@ -31,9 +32,13 @@ CREATE TABLE IF NOT EXISTS `players` (
    `name` VARCHAR(255) NOT NULL,
    `userid` INTEGER NOT NULL,
    `draftid` INTEGER NOT NULL,
-   `poolid` INTEGER NOT NULL,
+   `packid` INTEGER,
+   `picksid` INTEGER,
+   `passid` INTEGER,
    FOREIGN KEY (`userid`) REFERENCES `users`(`userid`),
    FOREIGN KEY (`draftid`) REFERENCES `drafts`(`draftid`),
-   FOREIGN KEY (`poolid`) REFERENCES `pools`(`poolid`),
+   FOREIGN KEY (`packid`) REFERENCES `pools`(`poolid`),
+   FOREIGN KEY (`picksid`) REFERENCES `pools`(`poolid`),
+   FOREIGN KEY (`passid`) REFERENCES `pools`(`poolid`),
    PRIMARY KEY (`playerid`)
 )engine=innodb default character set=utf8;

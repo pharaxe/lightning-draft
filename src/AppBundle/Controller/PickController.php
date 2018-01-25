@@ -17,15 +17,13 @@ use AppBundle\Entity\Pool;
 
 class PickController extends FOSRestController
 {
-    public function getPicksAction($draftURI, $playerURI)
+    public function getPicksAction($draftID, $playerID)
     {
 
        return $response;
     }
 
-    public function postPicksAction($draftURI, $PlayerURI) {
+    public function postPicksAction($draftID, $playerID) {
 
     }
 }
-
-
