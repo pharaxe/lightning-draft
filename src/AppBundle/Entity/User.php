@@ -25,7 +25,7 @@ class User
    private $name;
 
    /**
-    * @ORM\OneToMany(targetEntity="Player", mappedBy="player", cascade={"persist"})
+    * @ORM\OneToMany(targetEntity="Player", mappedBy="user", cascade={"persist"})
     * @ORM\JoinColumn(name="playerid", referencedColumnName="playerid")
     */
    private $players;

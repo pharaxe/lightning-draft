@@ -25,31 +25,31 @@ class Player
    private $name;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Draft", inversedBy="player")
+    * @ORM\ManyToOne(targetEntity="Draft", inversedBy="players")
     * @ORM\JoinColumn(name="draftid", referencedColumnName="draftid")
     */
    private $draft;
 
    /**
-    * @ORM\ManyToOne(targetEntity="User", inversedBy="player")
+    * @ORM\ManyToOne(targetEntity="User", inversedBy="players")
     * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
     */
    private $user;
 
    /**
-    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
+    * @ORM\OneToOne(targetEntity="Pool", cascade={"persist"})
     * @ORM\JoinColumn(name="picksid", referencedColumnName="poolid")
     */
    private $picks;
 
    /**
-    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
+    * @ORM\OneToOne(targetEntity="Pool", cascade={"persist"})
     * @ORM\JoinColumn(name="packid", referencedColumnName="poolid")
     */
    private $pack;
 
    /**
-    * @ORM\OneToOne(targetEntity="Pool", mappedBy="player", cascade={"persist"})
+    * @ORM\OneToOne(targetEntity="Pool", cascade={"persist"})
     * @ORM\JoinColumn(name="passid", referencedColumnName="poolid")
     */
    private $pass;
@@ -102,5 +102,11 @@ class Player
 
    public function setDraft($draft) {
       $this->draft = $draft;
+   }
+
+   public function draftPick($pick) {
+      $this->picks->addPick($pick);
+      // add the rest of the pack to the pass list.
+      $this->pass->addPool($this->pack);
    }
 }

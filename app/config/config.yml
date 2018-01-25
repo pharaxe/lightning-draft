@@ -37,6 +37,7 @@ framework:
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 # Doctrine Configuration
 doctrine:
@@ -92,3 +93,5 @@ fos_rest:
             json: true
     routing_loader: 
        include_format: false
+    exception:
+       enabled: true

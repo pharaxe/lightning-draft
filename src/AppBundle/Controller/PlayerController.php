@@ -32,7 +32,6 @@ class PlayerController extends FOSRestController
           ->getRepository(Draft::class)
           ->findOneById($draftID);
 
-       return $draft;
 
        $user = $this->getDoctrine()
           ->getRepository(User::class)
@@ -42,12 +41,12 @@ class PlayerController extends FOSRestController
        $player = $draft->addPlayer($user);
 
 
-       /*
-       $this->getDoctrine()
-          ->getManager()
-          ->persist($draft);
-        */
+       $em = $this->getDoctrine()->getManager();
+       $em->persist($player);
+       $em->flush();
 
+
+       return $player;
     }
 
 

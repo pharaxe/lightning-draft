@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `picks` (
 
 CREATE TABLE IF NOT EXISTS `players` (
    `playerid` INTEGER NOT NULL AUTO_INCREMENT,
-   `name` VARCHAR(255) NOT NULL,
+   `name` VARCHAR(255),
    `userid` INTEGER NOT NULL,
    `draftid` INTEGER NOT NULL,
    `packid` INTEGER,

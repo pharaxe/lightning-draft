@@ -58,6 +58,10 @@ class Pool
       return $this->getCount() + 1;
    }
 
+   public function removePick($pick) {
+      $this->picks->removeElement($pick);
+   }
+
    public function addPick($pick) {
       if ($this->getOrdered()) {
          $pick->setOrder($this->getNextOrder());

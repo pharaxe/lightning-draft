@@ -29,13 +29,15 @@ class PackController extends FOSRestController
           //$draftManager->createPackFor($player);
 
           
-          $db = $this->em->getRepository(Card::class);
+
           $cardManager = $this->get('AppBundle\Service\CardLibrary');
           $cards = $cardManager->getRandomCards();
 
           $player->getPack()->addCards($cards);
 
-          $this->em->persist($player);
+          $em = $this->getDoctrine()->getManager();
+          $em->persist($player);
+          $em->flush();
        }
 
        return $player->getPack();

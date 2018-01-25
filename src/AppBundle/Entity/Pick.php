@@ -25,13 +25,13 @@ class Pick
    private $order;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Art", inversedBy="pick", cascade="persist")
+    * @ORM\ManyToOne(targetEntity="Art", cascade="persist")
     * @ORM\JoinColumn(name="artid", referencedColumnName="artid")
     */
    private $art;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Pool", inversedBy="pick", cascade={"all"})
+    * @ORM\ManyToOne(targetEntity="Pool", inversedBy="picks", cascade={"all"})
     * @ORM\JoinColumn(name="poolid", referencedColumnName="poolid")
     */
    private $pool;
@@ -74,6 +74,11 @@ class Pick
    }
 
    public function setPool($pool) {
+      // if pick was in another pool, remove it from the arraycollection.
+      if ($this->getPool()) {
+         $this->getPool()->removePick($this);
+
+      }
       return $this->pool = $pool;
    }
 }

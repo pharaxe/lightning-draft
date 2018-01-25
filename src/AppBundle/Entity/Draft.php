@@ -30,7 +30,7 @@ class Draft
    private $status;
 
    /**
-    * @ORM\OneToMany(targetEntity="Player", mappedBy="player", cascade={"persist"})
+    * @ORM\OneToMany(targetEntity="Player", mappedBy="draft", cascade={"persist"})
     * @ORM\JoinColumn(name="playerid", referencedColumnName="playerid")
     */
    private $players;
