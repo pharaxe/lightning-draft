@@ -42,4 +42,11 @@ class CardController extends FOSRestController
 
        return $response;
     }
+
+    public function getRandomAction() {
+       $cardManager = $this->get('AppBundle\Service\CardLibrary');
+       $cards = $cardManager->getRandomCards();
+
+       return $cards;
+    }
 }
