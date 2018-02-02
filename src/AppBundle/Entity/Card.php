@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * @ORM\Entity
@@ -191,5 +192,14 @@ class Card
       $middle = (int) ceil($numberOfPrintings / 2);
 
       return $this->arts[$middle - 1];
+   }
+
+   /**
+    * @Serializer\VirtualProperty()
+    */
+   public function getUrl() {
+      $art = $this->getMiddleArt();
+
+      return 'http://bensweedler.com/art/' . $art->getMultiverseid() . '.jpg';
    }
 }
