@@ -200,6 +200,6 @@ class Card
    public function getUrl() {
       $art = $this->getMiddleArt();
 
-      return 'http://bensweedler.com/art/' . $art->getMultiverseid() . '.jpg';
+      return 'https://bensweedler.com/art/' . $art->getMultiverseid() . '.jpg';
    }
 }

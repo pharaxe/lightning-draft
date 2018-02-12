@@ -46,7 +46,13 @@ class CardController extends FOSRestController
     public function getRandomAction() {
        $cardManager = $this->get('AppBundle\Service\CardLibrary');
        $cards = $cardManager->getRandomCards();
-
        return $cards;
+
+       $serializer = $this->container->get('jms_serializer');
+       $card_data = $serializer->serialize($cards, 'json');
+       $response = new JsonResponse($card_data);
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+
+       return $response;
     }
 }
