@@ -29,6 +29,24 @@ class CardLibrary
 
    }
 
+   public function getRandomCards($limit = 3) {
+      $sql = "Select `cardid` from `cards` order by RAND() limit $limit";
+
+      $statement = $this->em->getConnection()->prepare($sql);
+      $statement->execute();
+      $randomCards = $statement->fetchAll();
+
+      // Because I used a native SQL statement for 'order by Rand()', 
+      // I need a couple steps to convert this array into card entities.
+      $cardIDs = array();
+      foreach ($randomCards as $card) {
+         $cardIDs[] = $card['cardid'];
+      }
+      $cardEntities = $this->em->getRepository(Card::class)->findById($cardIDs);
+
+      return $cardEntities;
+   }
+
    public function searchCards($search) {
 
       $db = $this->em->getRepository(Card::class);
@@ -281,5 +299,4 @@ class CardLibrary
          }
       }
    }
-
 }

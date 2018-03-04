@@ -1,3 +1,6 @@
 vendor
 app/config/symfony_demo
 *.swp
+error.log
+requests.log
+app/bootstrap.php.cache

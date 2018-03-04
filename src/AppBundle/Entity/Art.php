@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrin\Coommon\Collections\ArrayCollection;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="arts")

@@ -2,6 +2,9 @@
 // src/AppBundle/Controller/CardController.php
 namespace AppBundle\Controller;
 
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,14 +12,10 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 
-class CardController extends Controller
+class CardController extends FOSRestController
 {
-    /**
-     * @Route("/card")
-     */
-    public function indexAction(Request $request)
+    public function getAction(Request $request)
     {
-        // replace this example code with whatever you need
        $term = $request->query->get('name');
 
        if ($term == null) {
@@ -39,7 +38,20 @@ class CardController extends Controller
 
        $response = new JsonResponse($ret);
 
-       $response->headers->set('Access-Control-Allow-Origin', 'http://bensweedler.com:4200');
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+
+       return $response;
+    }
+
+    public function getRandomAction() {
+       $cardManager = $this->get('AppBundle\Service\CardLibrary');
+       $cards = $cardManager->getRandomCards();
+       return $cards;
+
+       $serializer = $this->container->get('jms_serializer');
+       $card_data = $serializer->serialize($cards, 'json');
+       $response = new JsonResponse($card_data);
+       $response->headers->set('Access-Control-Allow-Origin', '*');
 
        return $response;
     }
