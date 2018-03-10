@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
 
 
 /**
@@ -16,11 +17,13 @@ class Pick
     * @ORM\Column(type="integer", name="pickid")
     * @ORM\Id
     * @ORM\GeneratedValue(strategy="AUTO")
+    * @JMS\Exclude();
     */
    private $id;
 
    /**
     * @ORM\Column(type="integer", name="`order`")
+    * @JMS\Exclude();
     */
    private $order;
 
@@ -33,6 +36,7 @@ class Pick
    /**
     * @ORM\ManyToOne(targetEntity="Pool", inversedBy="picks", cascade={"all"})
     * @ORM\JoinColumn(name="poolid", referencedColumnName="poolid")
+    * @JMS\Exclude();
     */
    private $pool;
 

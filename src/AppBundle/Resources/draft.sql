@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `users` (
    `userid` INTEGER NOT NULL AUTO_INCREMENT,
-   `name` VARCHAR(255) NOT NULL,
+   `name` VARCHAR(255),
    PRIMARY KEY (`userid`)
 )engine=innodb default character set=utf8;
 
@@ -41,4 +41,13 @@ CREATE TABLE IF NOT EXISTS `players` (
    FOREIGN KEY (`picksid`) REFERENCES `pools`(`poolid`),
    FOREIGN KEY (`passid`) REFERENCES `pools`(`poolid`),
    PRIMARY KEY (`playerid`)
+)engine=innodb default character set=utf8;
+
+CREATE TABLE IF NOT EXISTS `players_colors` (
+   `id` INTEGER NOT NULL AUTO_INCREMENT,
+   `playerid` INTEGER NOT NULL,
+   `colorid` INTEGER NOT NULL,
+   PRIMARY KEY (`id`),
+   FOREIGN KEY (`playerid`) REFERENCES `players`(`playerid`),
+   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`)
 )engine=innodb default character set=utf8;

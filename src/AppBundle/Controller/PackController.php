@@ -24,23 +24,15 @@ class PackController extends FOSRestController
           ->findOneById($playerID);
 
        if ($player->getPack()->isEmpty()) {
-          //$draftManager = $this->get('AppBundle\Service\DraftService');
-
-          //$draftManager->createPackFor($player);
-
-          
-
-          $cardManager = $this->get('AppBundle\Service\CardLibrary');
-          $cards = $cardManager->getRandomCards();
-
-          $player->getPack()->addCards($cards);
-
-          $em = $this->getDoctrine()->getManager();
-          $em->persist($player);
-          $em->flush();
+          $draftManager = $this->get('AppBundle\Service\DraftService');
+          $draftManager->generatePackFor($player);
        }
 
-       return $player->getPack();
+       $serializer = $this->container->get('jms_serializer');
+       $card_data = $serializer->serialize($player->getPack(), 'json');
+       $response = new JsonResponse($card_data);
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+       return $response;
     }
 }
 

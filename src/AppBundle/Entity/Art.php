@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrin\Coommon\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -20,11 +21,13 @@ class Art
 
    /**
     * @ORM\Column(type="string", length=255)
+    * @JMS\Exclude();
     */
    private $artist;
 
    /**
     * @ORM\Column(type="string", length=255)
+    * @JMS\Exclude();
     */
    private $url;
 
@@ -47,6 +50,7 @@ class Art
    /**
     * @ORM\ManyToOne(targetEntity="Set", cascade="persist")
     * @ORM\JoinColumn(name="setid", referencedColumnName="setid")
+    * @JMS\Exclude();
     */
    private $set;
 

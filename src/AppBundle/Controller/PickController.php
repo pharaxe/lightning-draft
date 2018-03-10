@@ -18,6 +18,7 @@ use AppBundle\Entity\Pool;
 
 class PickController extends FOSRestController
 {
+    /* Returns the decklist so far the player */
     public function getPicksAction($draftID, $playerID)
     {
        $em = $this->getDoctrine()->getManager();
@@ -26,8 +27,9 @@ class PickController extends FOSRestController
        return $player->getPicks();
     }
 
-    public function putPicksAction($draftID, $playerID, $multiverseID) {
+    public function putPicksAction($draftID, $playerID, $cardid) {
        $response = new Response();
+       $serializer = $this->container->get('jms_serializer');
 
        $em = $this->getDoctrine()->getManager();
        $player = $em->getRepository(Player::class)->findOneById($playerID);
@@ -35,17 +37,25 @@ class PickController extends FOSRestController
        $possiblePicks = $player->getPack()->getPicks();
 
        foreach ($possiblePicks as $pick) {
-          if ($pick->getArt()->getMultiverseid() == $multiverseID) {
+          if ($pick->getArt()->getCard()->getId() == $cardid) {
              $player->draftPick($pick);
 
-             $em = $this->getDoctrine()->getManager();
-             $em->persist($player);
-             $em->flush();
+             // pick recorded, now get the next pack of cards.
+             $draftManager = $this->get('AppBundle\Service\DraftService');
+             $draftManager->generatePackFor($player);
 
-             return 'success';
+             $card_data = $serializer->serialize($player->getPack(), 'json');
+             $response = new JsonResponse($card_data);
+             $response->headers->set('Access-Control-Allow-Origin', '*');
+             return $response;
           }
        }
 
-       throw new HttpException(400, "Pick is not valid. Please pick a card from the offered pack");
+       // If pick is not found, return the pack again in case frontend is out of sync.
+       $card_data = $serializer->serialize($player->getPack(), 'json');
+       $response = new JsonResponse($card_data);
+       $response->setStatusCode(500);
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+       return $response;
     }
 }

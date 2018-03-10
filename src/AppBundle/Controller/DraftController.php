@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 use AppBundle\Entity\Art;
 use AppBundle\Entity\Player;
+use AppBundle\Entity\Draft;
 
 class DraftController extends FOSRestController
 {
@@ -35,7 +36,19 @@ class DraftController extends FOSRestController
      * When a user creates a new draft.
      */
     public function postDraftAction() {
+       $draft = new Draft();
 
+       $em = $this->getDoctrine()->getManager();
+       $em->persist($draft);
+       $em->flush();
+
+       $serializer = $this->container->get('jms_serializer');
+       $draft_data = $serializer->serialize($draft, 'json');
+       $response = new JsonResponse($draft_data);
+
+       $response->headers->set('Access-Control-Allow-Origin', '*');
+
+       return $response;
     }
 
 
