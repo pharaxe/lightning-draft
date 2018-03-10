@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
 
 
 /**
@@ -31,7 +32,7 @@ class Player
    private $draft;
 
    /**
-    * @ORM\ManyToOne(targetEntity="User", inversedBy="players")
+    * @ORM\ManyToOne(targetEntity="User", inversedBy="players", cascade={"persist"})
     * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
     */
    private $user;
@@ -78,6 +79,10 @@ class Player
 
    public function getPack() {
       return $this->pack;
+   }
+
+   public function generatePack() {
+
    }
 
    public function getPass() {

@@ -50,4 +50,8 @@ class User
    public function getPlayers() {
       return $this->players;
    }
+
+   public function addPlayer($player) {
+      $this->players->add($player);
+   }
 }

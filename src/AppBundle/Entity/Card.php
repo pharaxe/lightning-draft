@@ -4,7 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use JMS\Serializer\Annotation as Serializer;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -64,6 +64,7 @@ class Card
     *    joinColumns={@ORM\JoinColumn(name="cardid", referencedColumnName="cardid")},
     *    inverseJoinColumns={@ORM\JoinColumn(name="typeid", referencedColumnName="typeid")}
     *    )
+    * @JMS\Exclude();
     */
    private $types;
 
@@ -73,11 +74,13 @@ class Card
     *    joinColumns={@ORM\JoinColumn(name="cardid", referencedColumnName="cardid")},
     *    inverseJoinColumns={@ORM\JoinColumn(name="colorid", referencedColumnName="colorid")}
     *    )
+    * @JMS\Exclude();
     */
    private $identities;
 
    /**
     * @ORM\OneToMany(targetEntity="Art", mappedBy="card")
+    * @JMS\Exclude();
     */
    private $arts;
 
@@ -195,7 +198,7 @@ class Card
    }
 
    /**
-    * @Serializer\VirtualProperty()
+    * @JMS\VirtualProperty()
     */
    public function getUrl() {
       $art = $this->getMiddleArt();

@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
+use AppBundle\Entity\Player;
 
 /**
  * @ORM\Entity
@@ -38,6 +39,10 @@ class Draft
 
    public function __construct() {
       $this->players = new \Doctrine\Common\Collections\ArrayCollection();
+
+      // for now, there's only one player and user per draft. So let's create a user for them automatically.
+      $user = new User();
+      $this->addPlayer($user);
    }
 
    public function getId() {

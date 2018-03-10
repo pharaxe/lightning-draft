@@ -29,10 +29,15 @@ class DraftService
 
    }
 
-   public function createPackFor($player) {
+   public function generatePackFor($player) {
+       $cardManager = $this->container->get('AppBundle\Service\CardLibrary');
+
+       $cards = $cardManager->getRandomCards();
+
+       $player->getPack()->addCards($cards);
 
 
-
-
+       $this->em->persist($player);
+       $this->em->flush();
    }
 }
