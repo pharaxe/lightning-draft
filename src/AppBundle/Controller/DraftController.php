@@ -9,19 +9,30 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 use AppBundle\Entity\Art;
 use AppBundle\Entity\Player;
 use AppBundle\Entity\Draft;
 
+
 class DraftController extends FOSRestController
 {
    
-    public function getDraftAction($draftURI)
+    public function getDraftAction($draftID)
     {
-       $response = "hello";
+       $draft = $this->getDoctrine()
+          ->getRepository(Draft::class)
+          ->findOneById($draftID);
 
-       return $response;
+       if ($draft) {
+          $serializer = $this->container->get('jms_serializer');
+          $draft_data = $serializer->serialize($draft, 'json');
+          $response = new JsonResponse($draft_data);
+          return $response;
+       } else {
+          throw new HttpException(500, "Could not find draft with id: " . $draftID);
+       }
     }
 
 
@@ -29,6 +40,7 @@ class DraftController extends FOSRestController
      * list of drafts a user is participating or invited to.
      **/
     public function getDraftsAction() {
+       // big ol todo
 
     }
 
@@ -37,6 +49,9 @@ class DraftController extends FOSRestController
      */
     public function postDraftAction() {
        $draft = new Draft();
+       $draft->setup();
+       $draftManager = $this->get('AppBundle\Service\DraftService');
+       $draftManager->generatePackFor($draft->getPlayers()->first()); // right now there's only one player
 
        $em = $this->getDoctrine()->getManager();
        $em->persist($draft);
@@ -51,6 +66,14 @@ class DraftController extends FOSRestController
        return $response;
     }
 
+
+    /**
+     * Get three random unique guilds
+     */
+    public function getGuildsAction() {
+       $draftManager = $this->get('AppBundle\Service\DraftService');
+       return $draftManager->getRandomGuilds();
+    }
 
     /*
     public function getPlayerAction($playerid) {

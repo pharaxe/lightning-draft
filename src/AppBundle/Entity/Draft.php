@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use JMS\Serializer\Annotation as JMS;
 
 use AppBundle\Entity\Player;
 
@@ -22,11 +23,13 @@ class Draft
 
    /**
     * @ORM\Column(type="string", length=255)
+    * @JMS\Exclude();
     */
    private $name;
 
    /**
     * @ORM\Column(type="string", length=255)
+    * @JMS\Exclude();
     */
    private $status;
 
@@ -40,6 +43,9 @@ class Draft
    public function __construct() {
       $this->players = new \Doctrine\Common\Collections\ArrayCollection();
 
+   }
+
+   public function setup() {
       // for now, there's only one player and user per draft. So let's create a user for them automatically.
       $user = new User();
       $this->addPlayer($user);

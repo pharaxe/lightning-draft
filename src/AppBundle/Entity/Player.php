@@ -22,18 +22,21 @@ class Player
 
    /**
     * @ORM\Column(type="string", length=255)
+    * @JMS\Exclude();
     */
    private $name;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Draft", inversedBy="players")
+    * @ORM\ManyToOne(targetEntity="Draft", inversedBy="players", cascade={"persist"})
     * @ORM\JoinColumn(name="draftid", referencedColumnName="draftid")
+    * @JMS\Exclude();
     */
    private $draft;
 
    /**
     * @ORM\ManyToOne(targetEntity="User", inversedBy="players", cascade={"persist"})
     * @ORM\JoinColumn(name="userid", referencedColumnName="userid")
+    * @JMS\Exclude();
     */
    private $user;
 
@@ -52,6 +55,7 @@ class Player
    /**
     * @ORM\OneToOne(targetEntity="Pool", cascade={"persist"})
     * @ORM\JoinColumn(name="passid", referencedColumnName="poolid")
+    * @JMS\Exclude();
     */
    private $pass;
 
@@ -79,10 +83,6 @@ class Player
 
    public function getPack() {
       return $this->pack;
-   }
-
-   public function generatePack() {
-
    }
 
    public function getPass() {
