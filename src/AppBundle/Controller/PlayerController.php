@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 use AppBundle\Entity\Art;
 use AppBundle\Entity\Player;
@@ -26,6 +27,7 @@ class PlayerController extends FOSRestController
        return $player;
     }
 
+    // this is unused in the current version where each draft only has one player
     public function putPlayerAction($draftID) {
        
        $draft = $this->getDoctrine()

@@ -22,3 +22,9 @@ pack:
    parent: players
    type: rest
    resource: AppBundle\Controller\PackController
+
+colors:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\ColorController
+   name_prefix: colors_
