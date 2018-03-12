@@ -68,11 +68,14 @@ class Player
     */
    private $colors;
 
+   private $guilds; // TODO not saved currently
+
    public function __construct() {
       $this->picks = new Pool();
       $this->pass = new Pool();
       $this->pack = new Pool();
       $this->colors = new ArrayCollection();
+      $this->guilds = new ArrayCollection();
    }
 
    public function getId() {
@@ -133,5 +136,13 @@ class Player
 
    public function getColors() {
       return $this->colors;
+   }
+
+   public function getGuilds() {
+      return $this->guilds;
+   }
+
+   public function setGuilds($guilds) {
+      $this->guilds = $guilds;
    }
 }

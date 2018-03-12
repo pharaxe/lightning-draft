@@ -26,6 +26,11 @@ class DraftController extends FOSRestController
           ->findOneById($draftID);
 
        if ($draft) {
+          // add guild choices here for now.
+          $draftManager = $this->get('AppBundle\Service\DraftService');
+          $guilds = $draftManager->getRandomGuilds();
+          $draft->getPlayers()->first()->setGuilds($guilds);
+
           $serializer = $this->container->get('jms_serializer');
           $draft_data = $serializer->serialize($draft, 'json');
           $response = new JsonResponse($draft_data);
@@ -57,8 +62,15 @@ class DraftController extends FOSRestController
        $em->persist($draft);
        $em->flush();
 
+       // add some guild choices to the draft on return.
+       $guilds = $draftManager->getRandomGuilds();
+       $draft->getPlayers()->first()->setGuilds($guilds);
+
        $serializer = $this->container->get('jms_serializer');
        $draft_data = $serializer->serialize($draft, 'json');
+
+
+       
        $response = new JsonResponse($draft_data);
 
        $response->headers->set('Access-Control-Allow-Origin', '*');
