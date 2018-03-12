@@ -51,7 +51,7 @@ class DraftController extends FOSRestController
        $draft = new Draft();
        $draft->setup();
        $draftManager = $this->get('AppBundle\Service\DraftService');
-       $draftManager->generatePackFor($draft->getPlayers()->first()); // right now there's only one player
+       $draftManager->generatePackFor($draft->getPlayers()->first()); // right now there's only one player per draft.
 
        $em = $this->getDoctrine()->getManager();
        $em->persist($draft);

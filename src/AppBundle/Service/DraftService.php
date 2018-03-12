@@ -33,7 +33,8 @@ class DraftService
    public function generatePackFor($player) {
        $cardManager = $this->container->get('AppBundle\Service\CardLibrary');
 
-       $cards = $cardManager->getRandomCards();
+       $colors = $player->getColors();
+       $cards = $cardManager->getRandomCards($colors);
 
        $player->getPack()->addCards($cards);
 

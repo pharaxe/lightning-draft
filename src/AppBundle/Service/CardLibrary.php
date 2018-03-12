@@ -6,6 +6,7 @@ namespace AppBundle\Service;
 use \DateTime;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\DriverManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Config\Definition\Exception\Exception;
@@ -29,15 +30,61 @@ class CardLibrary
 
    }
 
-   public function getRandomCards($limit = 3) {
-      $sql = "Select `cardid` from `cards` order by RAND() limit $limit";
+   public function getRandomCards($colors = null, $limit = 3) {
 
-      $statement = $this->em->getConnection()->prepare($sql);
-      $statement->execute();
+      if ($colors && !$colors->isEmpty()) {
+         $colorsToFind = []; 
+         foreach ($colors as $color) {
+            $colorsToFind[] = $color->getId();
+         }
+
+         // first find the colors we want to exclude.
+         $sql = "Select `colorid` from `colors` where `colors`.`colorid` NOT IN (?)";
+         $statement = $this->em->getConnection()->executeQuery($sql,
+            array($colorsToFind),
+            array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
+         );
+         
+         //$statement->execute();
+         $colorsToExclude = $statement->fetchAll();
+
+         // flatten the tuples we got from the query
+         $colorsToExcludeIDs = []; 
+         foreach ($colorsToExclude as $color) {
+            $colorsToExcludeIDs[] = $color['colorid'];
+         }
+
+         $sql = <<<EOT
+            SELECT `cards`.`cardid` 
+            FROM `cards`
+            LEFT JOIN `cards_identities` 
+               ON (`cards`.cardid = `cards_identities`.cardid)
+            WHERE `cards_identities`.colorid NOT IN (?)
+            AND NOT EXISTS 
+               (SELECT * FROM `cards_identities` ci
+                WHERE 
+                 `cards`.`cardid` = ci.cardid AND
+                 ci.colorid IN (?))
+            ORDER BY RAND() LIMIT $limit;
+EOT;
+
+         $statement = $this->em->getConnection()->executeQuery($sql,
+            array($colorsToExcludeIDs, $colorsToExcludeIDs),
+            array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY,
+            \Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
+         );
+
+      } else {
+         $sql = "Select `cardid` from `cards` order by RAND() limit $limit";
+         $statement = $this->em->getConnection()->prepare($sql);
+         $statement->execute();
+      }
+      
       $randomCards = $statement->fetchAll();
 
       // Because I used a native SQL statement for 'order by Rand()', 
       // I need a couple steps to convert this array into card entities.
+      // TODO this is causing an extra query so perhaps I can find a way around this.
       $cardIDs = array();
       foreach ($randomCards as $card) {
          $cardIDs[] = $card['cardid'];

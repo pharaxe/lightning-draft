@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Entity
@@ -30,7 +31,12 @@ class Color
 
    public function getId() 
    {
-      return $id;
+      return $this->id;
+   }
+
+   public function setId($id) 
+   {
+      $this->id = $id;
    }
 
    public function setName($name) 

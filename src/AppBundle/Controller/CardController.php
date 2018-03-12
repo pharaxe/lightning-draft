@@ -11,6 +11,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+use AppBundle\Entity\Color;
+use Doctrine\Common\Collections\ArrayCollection;
+
 
 class CardController extends FOSRestController
 {
@@ -45,8 +48,12 @@ class CardController extends FOSRestController
 
     public function getRandomAction() {
        $cardManager = $this->get('AppBundle\Service\CardLibrary');
-       $cards = $cardManager->getRandomCards();
-       return $cards;
+       $testGreen = new Color();
+       $testGreen->setId(10);
+       $testRed = new Color();
+       $testRed->setId(9);
+
+       $cards = $cardManager->getRandomCards(new ArrayCollection(array($testGreen, $testRed)));
 
        $serializer = $this->container->get('jms_serializer');
        $card_data = $serializer->serialize($cards, 'json');

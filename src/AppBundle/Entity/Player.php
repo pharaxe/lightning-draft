@@ -59,10 +59,20 @@ class Player
     */
    private $pass;
 
+   /**
+    * @ORM\ManyToMany(targetEntity="Color", cascade={"persist"})
+    * @ORM\JoinTable(name="players_colors",
+    *    joinColumns={@ORM\JoinColumn(name="playerid", referencedColumnName="playerid")},
+    *    inverseJoinColumns={@ORM\JoinColumn(name="colorid", referencedColumnName="colorid")}
+    *    )
+    */
+   private $colors;
+
    public function __construct() {
       $this->picks = new Pool();
       $this->pass = new Pool();
       $this->pack = new Pool();
+      $this->colors = new ArrayCollection();
    }
 
    public function getId() {
@@ -113,5 +123,15 @@ class Player
       $this->picks->addPick($pick);
       // add the rest of the pack to the pass list.
       $this->pass->addPool($this->pack);
+   }
+
+   public function addColor($color) {
+      if (!$this->colors->contains($color)) {
+         $this->colors->add($color);
+      }
+   }
+
+   public function getColors() {
+      return $this->colors;
    }
 }
