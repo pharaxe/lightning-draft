@@ -28,8 +28,10 @@ class DraftController extends FOSRestController
        if ($draft) {
           // add guild choices here for now.
           $draftManager = $this->get('AppBundle\Service\DraftService');
+          /*
           $guilds = $draftManager->getRandomGuilds();
           $draft->getPlayers()->first()->setGuilds($guilds);
+           */
 
           $serializer = $this->container->get('jms_serializer');
           $draft_data = $serializer->serialize($draft, 'json');
@@ -68,8 +70,6 @@ class DraftController extends FOSRestController
 
        $serializer = $this->container->get('jms_serializer');
        $draft_data = $serializer->serialize($draft, 'json');
-
-
        
        $response = new JsonResponse($draft_data);
 

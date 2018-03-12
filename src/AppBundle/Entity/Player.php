@@ -124,6 +124,12 @@ class Player
 
    public function draftPick($pick) {
       $this->picks->addPick($pick);
+
+      if ($this->getPack()->getPicks()->count() >= 25) {
+         // draft is complete. TODO status should be tied to player not draft
+         $this->getDraft()->setStatus(Draft::STATUS_COMPLETED);
+      }
+
       // add the rest of the pack to the pass list.
       $this->pass->addPool($this->pack);
    }

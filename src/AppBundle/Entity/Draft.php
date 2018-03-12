@@ -14,6 +14,10 @@ use AppBundle\Entity\Player;
  */
 class Draft
 {
+   const STATUS_SETUP = 'setup';
+   const STATUS_RUNNING = 'running';
+   const STATUS_COMPLETED = 'completed';
+
    /**
     * @ORM\Column(type="integer", name="draftid")
     * @ORM\Id
@@ -29,7 +33,6 @@ class Draft
 
    /**
     * @ORM\Column(type="string", length=255)
-    * @JMS\Exclude();
     */
    private $status;
 
@@ -48,10 +51,19 @@ class Draft
       // for now, there's only one player and user per draft. So let's create a user for them automatically.
       $user = new User();
       $this->addPlayer($user);
+      $this->setStatus(self::STATUS_SETUP);
    }
 
    public function getId() {
       return $this->id;
+   }
+
+   public function getStatus() {
+      return $this->status;
+   }
+
+   public function setStatus($status) {
+      $this->status = $status;
    }
 
    public function getName() {
@@ -80,4 +92,5 @@ class Draft
 
       return $player;
    }
+
 }
