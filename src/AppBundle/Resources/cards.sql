@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS `cards` (
    `power` INTEGER,
    `toughness` INTEGER,
    `legendary` BOOLEAN DEFAULT FALSE NOT NULL,
+   `type_text` VARCHAR(255),
    `ability` TEXT,
    PRIMARY KEY (`cardid`)
 )engine=innodb default character set=utf8;

@@ -6,6 +6,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMS;
 
+use AppBundle\Entity\Art;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="cards")
@@ -23,6 +25,11 @@ class Card
     * @ORM\Column(type="string", length=255)
     */
    private $name;
+
+   /**
+    * @ORM\Column(type="string", length=255)
+    */
+   private $type_text;
 
    /**
     * @ORM\Column(type="string", length=100, name="mana_cost")
@@ -194,7 +201,10 @@ class Card
 
       $middle = (int) ceil($numberOfPrintings / 2);
 
-      return $this->arts[$middle - 1];
+      $artArray = $this->getArts()->toArray();
+      $sortedByDate = usort($artArray, array("AppBundle\Entity\Art", "SortByReleaseDate"));
+
+      return $artArray[min(0, $middle - 1)];
    }
 
    /**
@@ -204,5 +214,13 @@ class Card
       $art = $this->getMiddleArt();
 
       return 'https://bensweedler.com/art/' . $art->getMultiverseid() . '.jpg';
+   }
+
+   public function getTypeText() {
+      return $this->type_text;
+   }
+
+   public function setTypeText($text) {
+      $this->type_text = $text;
    }
 }

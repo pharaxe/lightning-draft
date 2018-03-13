@@ -109,4 +109,8 @@ class Art
    public function getFullURL() {
       return "http://bensweedler.com/art/" . $this->getMultiverseid() . ".jpg";
    }
+
+   public static function SortByReleaseDate($a, $b) {
+      return ($a->getSet()->getReleaseDate() > $b->getSet()->getReleaseDate()) ? +1 : -1;
+   }
 }

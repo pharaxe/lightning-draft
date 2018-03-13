@@ -27,7 +27,6 @@ class CardLibrary
    {
       $this->em = $entityManager;
       $this->container = $container;
-
    }
 
    public function getRandomCards($colors = null, $limit = 3) {
@@ -95,7 +94,6 @@ EOT;
    }
 
    public function searchCards($search) {
-
       $db = $this->em->getRepository(Card::class);
 
       $qb = $db->createQueryBuilder('c');
@@ -126,13 +124,23 @@ EOT;
          $this->updateCard($card);
          $counter++;
       }
-
    }
 
    private function updateCard($data) 
    {
       // find the card in the database
       $card = $this->em->getRepository(Card::class)->findOneByName($data->name);
+      
+      if ($data->layout == 'double-faced' || $data->layout == 'flip') { 
+         //only enter the main side of df cards.
+         if ($data->name != $data->names[0]) {
+            echo 'skipping ' . $data->name . "because it's flip side of a card\n";
+            return;
+         }
+      } else if (in_array($data->layout, array("meld", "split", "scheme"))) {
+         echo 'skipping ' . $data->name . "because it's a " . $data->layout . " card\n";
+         return;
+      } 
       
       // insert instead of update for brand new entries.
 
@@ -142,7 +150,6 @@ EOT;
       } else {
          echo 'updating ' . $data->name . "\n";
       }
-
 
       $card->setName($data->name);
       if (isset($data->power) && is_int($data->power))
@@ -182,9 +189,9 @@ EOT;
             if ($typeName == 'Eaturecray')
                $typeName = 'Creature'; // hack for a pig latin joke card that exists.
 
-            if ($typeName == 'Enchant')  {
+            if ($typeName == 'Enchant')  { // only the unglued cards have this messed up formating for auras.
                $auraFlag = true;
-               $typeName = 'Enchantment';
+               $typeName = 'Enchantment'; 
             }
 
             $type = $this->em->getRepository(Type::class)->findOneByName($typeName);
