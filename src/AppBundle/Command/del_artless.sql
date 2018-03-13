@@ -3,3 +3,6 @@ DELETE FROM cards WHERE cardid IN (SELECT * FROM
       FROM cards LEFT JOIN arts ON 
       (cards.cardid=arts.cardid) 
       WHERE arts.cardid IS NULL)tmpTable);
+
+DELETE FROM sets WHERE name LIKE "Unh%"; 
+DELETE FROM sets WHERE name LIKE "Ung%"; 

@@ -137,7 +137,7 @@ EOT;
             echo 'skipping ' . $data->name . "because it's flip side of a card\n";
             return;
          }
-      } else if (in_array($data->layout, array("meld", "split", "scheme"))) {
+      } else if (in_array($data->layout, array("meld", "split", "scheme", "phenomenon"))) {
          echo 'skipping ' . $data->name . "because it's a " . $data->layout . " card\n";
          return;
       } 
@@ -181,6 +181,10 @@ EOT;
             $color = $this->em->getRepository(Color::class)->findOneBySymbol($colorSymbol);
             $card->addIdentity($color);
          }
+      }
+
+      if (isset($data->type)) {
+         $card->setTypeText($data->type);
       }
 
       if (isset($data->types)) {
