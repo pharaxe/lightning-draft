@@ -24,24 +24,21 @@ class ColorController extends FOSRestController
 {
     /**
      * The colors should come in the JSON body.
-     * @ParamConverter("colors", class="array<AppBundle\Entity\Color>", converter="fos_rest.request_body")
-     * The route for this miiiight be clobbering any future POST draft/players routes. Be warned.
-     *
+     * Hmm maybe this should be in player controller
      */
-    public function postAction($draftID, $playerID, $colors) {
+    public function postAction(Request $request, $draftID, $playerID) {
        $player = $this->getDoctrine()
           ->getRepository(Player::class)
           ->findOneById($playerID);
 
+       $colors = $request->request->get('colors');
 
        foreach ($colors as $color) {
-          // somehow, if I don't regrab the color object, they save under new primary key ids.
           $correctColorEntity = $this->getDoctrine()
              ->getRepository(Color::class)
-             ->findOneById($color->getId());
+             ->findOneById($color['id']);
           $player->addColor($correctColorEntity);
        }
-
 
        // update draft to running.
        $player->getDraft()->setStatus(Draft::STATUS_RUNNING);
