@@ -22,8 +22,10 @@ CREATE TABLE IF NOT EXISTS `picks` (
    `poolid` INTEGER NOT NULL,
    `artid` INTEGER NOT NULL,
    `order` INTEGER DEFAULT NULL,
-   FOREIGN KEY (`poolid`) REFERENCES `pools`(`poolid`),
-   FOREIGN KEY (`artid`) REFERENCES `arts`(`artid`),
+   FOREIGN KEY (`poolid`) REFERENCES `pools`(`poolid`)
+      ON DELETE CASCADE,
+   FOREIGN KEY (`artid`) REFERENCES `arts`(`artid`)
+      ON DELETE CASCADE,
    PRIMARY KEY (`pickid`)
 )engine=innodb default character set=utf8;
 
@@ -48,6 +50,9 @@ CREATE TABLE IF NOT EXISTS `players_colors` (
    `playerid` INTEGER NOT NULL,
    `colorid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`playerid`) REFERENCES `players`(`playerid`) ON DELETE CASCADE,
+   FOREIGN KEY (`playerid`) REFERENCES `players`(`playerid`) 
+      ON DELETE CASCADE,
    FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 )engine=innodb default character set=utf8;

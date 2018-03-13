@@ -28,14 +28,15 @@ CREATE TABLE IF NOT EXISTS `arts` (
    `setid` INTEGER NOT NULL,
 
    PRIMARY KEY (`artid`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
-   FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`) ON DELETE CASCADE
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) 
+      ON DELETE CASCADE,
+   FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`) 
+      ON DELETE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `types` (
    `typeid` INTEGER NOT NULL AUTO_INCREMENT,
    `name` ENUM ('creature', 'artifact', 'sorcery', 'enchantment', 'instant', 'land', 'conspiracy', 'planeswalker'),
-
    PRIMARY KEY (`typeid`)
 )engine=innodb default character set=utf8;
 
@@ -44,8 +45,11 @@ CREATE TABLE IF NOT EXISTS `cards_types` (
    `cardid` INTEGER NOT NULL,
    `typeid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
-   FOREIGN KEY (`typeid`) REFERENCES `types`(`typeid`) ON DELETE CASCADE
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) 
+      ON DELETE CASCADE,
+   FOREIGN KEY (`typeid`) REFERENCES `types`(`typeid`) 
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `colors` (
@@ -60,8 +64,11 @@ CREATE TABLE IF NOT EXISTS `cards_colors` (
    `cardid` INTEGER NOT NULL,
    `colorid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
-   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`) ON DELETE CASCADE
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) 
+      ON DELETE CASCADE,
+   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`) 
+      ON DELETE CASCADE
+      ON UPDATE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `cards_identities` (
@@ -69,8 +76,11 @@ CREATE TABLE IF NOT EXISTS `cards_identities` (
    `cardid` INTEGER NOT NULL,
    `colorid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
-   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`) ON DELETE CASCADE
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`)
+      ON DELETE CASCADE,
+   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`) 
+      ON DELETE CASCADE 
+      ON UPDATE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `formats` (
