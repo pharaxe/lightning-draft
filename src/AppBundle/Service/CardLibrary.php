@@ -129,12 +129,11 @@ EOT;
    private function updateCard($data) 
    {
       // find the card in the database
-      $card = $this->em->getRepository(Card::class)->findOneByName($data->name);
       
       if ($data->layout == 'double-faced' || $data->layout == 'flip') { 
          //only enter the main side of df cards.
          if ($data->name != $data->names[0]) {
-            echo 'skipping ' . $data->name . "because it's flip side of a card\n";
+            echo 'skipping ' . $data->name . "because it's the back or flip side of a card\n";
             return;
          }
       } else if (in_array($data->layout, array("meld", "split", "scheme", "phenomenon"))) {
@@ -143,6 +142,7 @@ EOT;
       } 
       
       // insert instead of update for brand new entries.
+      $card = $this->em->getRepository(Card::class)->findOneByName($data->name);
 
       if ($card == null) {
          $card = new Card(); 
@@ -305,7 +305,7 @@ EOT;
          if ($set == null) {
             echo "Couldn't find set in database for " . $setData->code . "\n";
             return;
-         }
+         } 
 
          $artsToAssign = $setData->cards; 
          foreach ($artsToAssign as $artData) {
@@ -344,7 +344,7 @@ EOT;
             $art->setArtist($artData->artist);
             $art->setRarity($artData->rarity);
 
-            $art->setUrl($set->getCode() . '/' . $art->getMultiverseid());
+            $art->setUrl('/art' . $art->getMultiverseid());
             $art->setSet($set);
             $art->setCard($card);
 
