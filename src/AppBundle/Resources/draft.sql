@@ -35,8 +35,8 @@ CREATE TABLE IF NOT EXISTS `players` (
    `packid` INTEGER,
    `picksid` INTEGER,
    `passid` INTEGER,
-   FOREIGN KEY (`userid`) REFERENCES `users`(`userid`),
-   FOREIGN KEY (`draftid`) REFERENCES `drafts`(`draftid`),
+   FOREIGN KEY (`userid`) REFERENCES `users`(`userid`) ON DELETE CASCADE,
+   FOREIGN KEY (`draftid`) REFERENCES `drafts`(`draftid`) ON DELETE CASCADE,
    FOREIGN KEY (`packid`) REFERENCES `pools`(`poolid`),
    FOREIGN KEY (`picksid`) REFERENCES `pools`(`poolid`),
    FOREIGN KEY (`passid`) REFERENCES `pools`(`poolid`),
@@ -48,6 +48,6 @@ CREATE TABLE IF NOT EXISTS `players_colors` (
    `playerid` INTEGER NOT NULL,
    `colorid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`playerid`) REFERENCES `players`(`playerid`),
+   FOREIGN KEY (`playerid`) REFERENCES `players`(`playerid`) ON DELETE CASCADE,
    FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`)
 )engine=innodb default character set=utf8;

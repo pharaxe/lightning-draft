@@ -28,8 +28,8 @@ CREATE TABLE IF NOT EXISTS `arts` (
    `setid` INTEGER NOT NULL,
 
    PRIMARY KEY (`artid`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`),
-   FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`)
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
+   FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`) ON DELETE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `types` (
@@ -44,8 +44,8 @@ CREATE TABLE IF NOT EXISTS `cards_types` (
    `cardid` INTEGER NOT NULL,
    `typeid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`),
-   FOREIGN KEY (`typeid`) REFERENCES `types`(`typeid`)
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
+   FOREIGN KEY (`typeid`) REFERENCES `types`(`typeid`) ON DELETE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `colors` (
@@ -60,8 +60,8 @@ CREATE TABLE IF NOT EXISTS `cards_colors` (
    `cardid` INTEGER NOT NULL,
    `colorid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`),
-   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`)
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
+   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`) ON DELETE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `cards_identities` (
@@ -69,8 +69,8 @@ CREATE TABLE IF NOT EXISTS `cards_identities` (
    `cardid` INTEGER NOT NULL,
    `colorid` INTEGER NOT NULL,
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`),
-   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`)
+   FOREIGN KEY (`cardid`) REFERENCES `cards`(`cardid`) ON DELETE CASCADE,
+   FOREIGN KEY (`colorid`) REFERENCES `colors`(`colorid`) ON DELETE CASCADE
 )engine=innodb default character set=utf8;
 
 CREATE TABLE IF NOT EXISTS `formats` (
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `sets_formats` (
    `formatid` INTEGER NOT NULL,
 
    PRIMARY KEY (`id`),
-   FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`),
-   FOREIGN KEY (`formatid`) REFERENCES `formats`(`formatid`)
+   FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`) ON DELETE CASCADE,
+   FOREIGN KEY (`formatid`) REFERENCES `formats`(`formatid`) ON DELETE CASCADE
 )engine=innodb default character set=utf8;
 
