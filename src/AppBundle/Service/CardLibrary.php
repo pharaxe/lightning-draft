@@ -328,7 +328,7 @@ EOT;
 
             if ($art == null) {
                $art = new Art();
-               echo 'inserting ' . $artData->name . "\n";
+               echo 'inserting ' . $artData->name . "with set " . $set->getName() .  "\n";
             } else {
                echo 'updating ' . $artData->name . "\n";
             }
@@ -353,8 +353,8 @@ EOT;
             $this->em->detach($art);
             $art = null;
             unset($art);
-            $this->em->clear();
          }
+         $this->em->clear(); // clear after each set to save mem.
       }
    }
 }

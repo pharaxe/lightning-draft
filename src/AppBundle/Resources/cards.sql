@@ -100,4 +100,3 @@ CREATE TABLE IF NOT EXISTS `sets_formats` (
    FOREIGN KEY (`setid`) REFERENCES `sets`(`setid`) ON DELETE CASCADE,
    FOREIGN KEY (`formatid`) REFERENCES `formats`(`formatid`) ON DELETE CASCADE
 )engine=innodb default character set=utf8;
-

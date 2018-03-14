@@ -48,7 +48,7 @@ class Art
    private $card;
 
    /**
-    * @ORM\ManyToOne(targetEntity="Set", cascade="persist")
+    * @ORM\ManyToOne(targetEntity="Set", inversedBy="arts", cascade="persist")
     * @ORM\JoinColumn(name="setid", referencedColumnName="setid")
     * @JMS\Exclude();
     */
