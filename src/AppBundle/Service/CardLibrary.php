@@ -130,13 +130,14 @@ EOT;
    {
       // find the card in the database
       
-      if ($data->layout == 'double-faced' || $data->layout == 'flip') { 
-         //only enter the main side of df cards.
+      if ($data->layout == 'double-faced') { 
+         //only enter the main side of Double Faced cards.
          if ($data->name != $data->names[0]) {
             echo 'skipping ' . $data->name . "because it's the back or flip side of a card\n";
             return;
          }
-      } else if (in_array($data->layout, array("meld", "split", "scheme", "phenomenon"))) {
+      } else if (in_array($data->layout, array("aftermath", "flip", "conspiracy", "plane", "meld", "split", "scheme", "phenomenon"))) {
+         // eventually, I might want to include some of these types of cards.
          echo 'skipping ' . $data->name . "because it's a " . $data->layout . " card\n";
          return;
       } 
@@ -225,6 +226,7 @@ EOT;
     */
    public function fillColorTable() 
    {
+      echo 'Filling colors table\n';
       $colors = array(
          array('name' => 'white', 'symbol' => 'W'),
          array('name' => 'blue', 'symbol' => 'U'),
@@ -249,6 +251,7 @@ EOT;
    public function fillTypesTable()  
    {
 
+      echo 'Filling types table\n';
       $types = array('creature', 'artifact', 'sorcery', 'enchantment', 'instant', 'land', 'conspiracy', 'planeswalker');
 
       foreach ($types as $typeName) {

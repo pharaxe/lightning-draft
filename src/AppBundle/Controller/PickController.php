@@ -39,10 +39,17 @@ class PickController extends FOSRestController
        foreach ($possiblePicks as $pick) {
           if ($pick->getArt()->getCard()->getId() == $cardid) {
              $player->draftPick($pick);
-
              // pick recorded, now get the next pack of cards.
-             $draftManager = $this->get('AppBundle\Service\DraftService');
-             $draftManager->generatePackFor($player);
+
+             if ($player->getPicks()->getCount() < Draft::DECKSIZE_LIMIT) {
+                $draftManager = $this->get('AppBundle\Service\DraftService');
+                $draftManager->generatePackFor($player);
+             } else { 
+                // don't get more cards if deck is completed.
+                $player->getDraft()->setStatus(Draft::STATUS_COMPLETED);
+                $em->persist($player);
+                $em->flush();
+             }
 
              $card_data = $serializer->serialize($player->getPack(), 'json');
              $response = new JsonResponse($card_data);

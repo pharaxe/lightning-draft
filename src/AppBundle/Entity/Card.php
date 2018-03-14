@@ -204,7 +204,7 @@ class Card
       $artArray = $this->getArts()->toArray();
       $sortedByDate = usort($artArray, array("AppBundle\Entity\Art", "SortByReleaseDate"));
 
-      return $artArray[min(0, $middle - 1)];
+      return $artArray[max(0, $middle - 1)];
    }
 
    /**

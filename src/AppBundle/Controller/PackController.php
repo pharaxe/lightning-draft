@@ -23,9 +23,11 @@ class PackController extends FOSRestController
           ->getRepository(Player::class)
           ->findOneById($playerID);
 
-       if ($player->getPack()->isEmpty()) {
-          $draftManager = $this->get('AppBundle\Service\DraftService');
-          $draftManager->generatePackFor($player);
+       if ($player->getPicks()->getCount() < Draft::DECKSIZE_LIMIT) {
+          if ($player->getPack()->isEmpty()) {
+             $draftManager = $this->get('AppBundle\Service\DraftService');
+             $draftManager->generatePackFor($player);
+          }
        }
 
        $serializer = $this->container->get('jms_serializer');
