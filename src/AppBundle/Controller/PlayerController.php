@@ -51,7 +51,6 @@ class PlayerController extends FOSRestController
        return $player;
     }
 
-
     /*
     public function getPickAction($id) {
        $player = $this->getDoctrine()

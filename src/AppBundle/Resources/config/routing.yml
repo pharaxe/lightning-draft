@@ -23,6 +23,11 @@ pack:
    type: rest
    resource: AppBundle\Controller\PackController
 
+deck:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\DeckController
+
 colors:
    parent: players
    type: rest

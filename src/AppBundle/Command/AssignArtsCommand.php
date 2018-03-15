@@ -23,7 +23,7 @@ class AssignArtsCommand extends ContainerAwareCommand
    protected function execute(InputInterface $input, OutputInterface $output)
    {
 
-      $jsonFileDirectory = array(__DIR__);
+      $jsonFileDirectory = array(__DIR__ . "/../Resources/json");
       $locator = new FileLocator($jsonFileDirectory);
       ini_set('memory_limit','-1');
       $files = $locator->locate('AllSets.json', null, false);

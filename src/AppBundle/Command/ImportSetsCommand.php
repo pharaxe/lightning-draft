@@ -21,7 +21,7 @@ class ImportSetsCommand extends ContainerAwareCommand
    protected function execute(InputInterface $input, OutputInterface $output)
    {
 
-      $jsonFileDirectory = array(__DIR__);
+      $jsonFileDirectory = array(__DIR__ . '/../Resources/json');
       $locator = new FileLocator($jsonFileDirectory);
       $files = $locator->locate('SetList.json', null, false);
 

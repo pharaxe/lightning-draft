@@ -216,6 +216,9 @@ class Card
       return 'https://bensweedler.com/art/' . $art->getMultiverseid() . '.jpg';
    }
 
+   /**
+    * @JMS\Exclude();
+    */
    public function getTypeText() {
       return $this->type_text;
    }
@@ -223,4 +226,21 @@ class Card
    public function setTypeText($text) {
       $this->type_text = $text;
    }
+
+   public function isLand() {
+      foreach ($this->getTypes() as $type) {
+         if ($type->getName() == 'land')
+            return true;
+      }
+      return false;
+   }
+
+   public static function sortByCmc($n1, $n2) {
+      if ($n1->getCmc() == $n2->getCmc() )  {
+         // lands come first
+         return 0;
+      }
+
+      return ($n1->getCmc() > $n2->getCmc()) ? +1 : -1;
+   } 
 }
