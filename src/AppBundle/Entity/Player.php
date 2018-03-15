@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMS;
+use \DateTime;
 
 
 /**
@@ -68,7 +69,17 @@ class Player
     */
    private $colors;
 
-   private $guilds; // TODO not saved currently
+   /**
+    * @ORM\Column(type="datetime", nullable=true)
+    */
+   private $start;
+
+   /**
+    * @ORM\Column(type="datetime", nullable=true)
+    */
+   private $finish;
+
+   private $guilds; // TODO I want to store guilds by players once multiplayer drafts
 
    public function __construct() {
       $this->picks = new Pool();
@@ -150,5 +161,29 @@ class Player
 
    public function setGuilds($guilds) {
       $this->guilds = $guilds;
+   }
+
+   public function getStart() {
+      return $this->start;
+   }
+
+   public function setStart($time) {
+      $this->start = $time;
+   }
+
+   public function getFinish() {
+      return $this->finish;
+   }
+
+   public function setFinish($time) {
+      $this->finish = $time;
+   }
+
+   public function setStartAsNow() {
+      $this->setStart(new DateTime('now'));
+   }
+
+   public function setFinishAsNow() {
+      $this->setFinish(new DateTime('now'));
    }
 }

@@ -42,6 +42,8 @@ class ColorController extends FOSRestController
 
        // update draft to running.
        $player->getDraft()->setStatus(Draft::STATUS_RUNNING);
+       $player->setStartAsNow();
+       //
 
        $em = $this->getDoctrine()->getManager();
        $em->persist($player);

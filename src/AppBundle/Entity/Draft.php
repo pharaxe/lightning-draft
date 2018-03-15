@@ -43,7 +43,6 @@ class Draft
     */
    private $players;
 
-
    public function __construct() {
       $this->players = new \Doctrine\Common\Collections\ArrayCollection();
    }

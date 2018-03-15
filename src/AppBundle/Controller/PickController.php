@@ -39,6 +39,7 @@ class PickController extends FOSRestController
        foreach ($possiblePicks as $pick) {
           if ($pick->getArt()->getCard()->getId() == $cardid) {
              $player->draftPick($pick);
+             $player->setFinishAsNow(); // finish date represents last picked card.
              // pick recorded, now get the next pack of cards.
 
              if ($player->getPicks()->getCount() < Draft::DECKSIZE_LIMIT) {

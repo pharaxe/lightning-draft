@@ -37,6 +37,8 @@ CREATE TABLE IF NOT EXISTS `players` (
    `packid` INTEGER,
    `picksid` INTEGER,
    `passid` INTEGER,
+   `start` DATETIME,
+   `finish` DATETIME,
    FOREIGN KEY (`userid`) REFERENCES `users`(`userid`) ON DELETE CASCADE,
    FOREIGN KEY (`draftid`) REFERENCES `drafts`(`draftid`) ON DELETE CASCADE,
    FOREIGN KEY (`packid`) REFERENCES `pools`(`poolid`),
