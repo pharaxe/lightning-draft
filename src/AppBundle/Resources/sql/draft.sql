@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS `users` (
    `userid` INTEGER NOT NULL AUTO_INCREMENT,
-   `name` VARCHAR(255),
+   `uuid` VARCHAR(255),
    PRIMARY KEY (`userid`)
 )engine=innodb default character set=utf8;
 
@@ -8,6 +8,8 @@ CREATE TABLE IF NOT EXISTS `drafts` (
    `draftid` INTEGER NOT NULL AUTO_INCREMENT,
    `name` VARCHAR(255),
    `status` ENUM('setup', 'running', 'completed'),
+   `start` DATETIME,
+   `finish` DATETIME,
    PRIMARY KEY (`draftid`)
 )engine=innodb default character set=utf8;
 
@@ -37,8 +39,6 @@ CREATE TABLE IF NOT EXISTS `players` (
    `packid` INTEGER,
    `picksid` INTEGER,
    `passid` INTEGER,
-   `start` DATETIME,
-   `finish` DATETIME,
    FOREIGN KEY (`userid`) REFERENCES `users`(`userid`) ON DELETE CASCADE,
    FOREIGN KEY (`draftid`) REFERENCES `drafts`(`draftid`) ON DELETE CASCADE,
    FOREIGN KEY (`packid`) REFERENCES `pools`(`poolid`),

@@ -57,13 +57,12 @@ class DraftController extends FOSRestController
      */
     public function postDraftAction(Request $request) {
        $serializer = $this->container->get('jms_serializer');
-       $draft = new Draft();
-       $draft->setup();
-       $draftManager = $this->get('AppBundle\Service\DraftService');
 
-       $em = $this->getDoctrine()->getManager();
-       $em->persist($draft);
-       $em->flush();
+       $uuid = $request->request->get('uuid');
+
+       $draft = new Draft();
+       $draftManager = $this->get('AppBundle\Service\DraftService');
+       $draftManager->setupDraft($draft, $uuid);
 
        $colors = $request->request->get('colors');
 
@@ -75,9 +74,7 @@ class DraftController extends FOSRestController
           ));
        }
 
-       //$draftManager->generatePackFor($draft->getPlayers()->first()); // right now there's only one player per draft.
-
-       $em = $this->getDoctrine()->getManager();
+       $em = $this->getDoctrine()->getManager(); // TODO check if these annoying flushes are neccessary
        $em->persist($draft);
        $em->flush();
 

@@ -14,6 +14,8 @@ use AppBundle\Entity\Card;
 use AppBundle\Entity\Color;
 use AppBundle\Entity\Type;
 use AppBundle\Entity\Set;
+use AppBundle\Entity\Draft;
+use AppBundle\Entity\User;
 use AppBundle\Entity\Art;
 use Symfony\Component\Config\FileLocator;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -28,6 +30,27 @@ class DraftService
       $this->em = $entityManager;
       $this->container = $container;
 
+   }
+
+   public function setupDraft($draft, $uuid = null) {
+      // for now, there's only one player per draft. 
+      if ($uuid == null) {
+         $user = new User(); // create blank user with no uuid.
+      } else {
+         // look for existing user.
+         $user = $this->em->getRepository(User::class)->findOneByUuid($uuid);
+         if ($user == null) {
+            // create new user.
+            $user = new User();
+            $user->setUUID($uuid);
+         }
+      }
+
+      $draft->createPlayer($user);
+      $draft->setStatus(Draft::STATUS_SETUP);
+
+      $this->em->persist($draft);
+      $this->em->flush();
    }
 
    public function generatePackFor($player) {

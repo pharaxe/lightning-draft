@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use JMS\Serializer\Annotation as JMS;
 
 use AppBundle\Entity\Player;
+use \DateTime;
 
 /**
  * @ORM\Entity
@@ -43,15 +44,18 @@ class Draft
     */
    private $players;
 
+   /**
+    * @ORM\Column(type="datetime", nullable=true)
+    */
+   private $start;
+
+   /**
+    * @ORM\Column(type="datetime", nullable=true)
+    */
+   private $finish;
+
    public function __construct() {
       $this->players = new \Doctrine\Common\Collections\ArrayCollection();
-   }
-
-   public function setup() {
-      // for now, there's only one player and user per draft. So let's create a user for them automatically.
-      $user = new User();
-      $this->addPlayer($user);
-      $this->setStatus(self::STATUS_SETUP);
    }
 
    public function getId() {
@@ -81,7 +85,7 @@ class Draft
    /**
     * @return the resulting Player from adding the user to the draft. 
     **/
-   public function addPlayer($user) {
+   public function createPlayer($user) {
       // TODO check to see if user is already in the draft
       $player = new Player();
 
@@ -91,6 +95,31 @@ class Draft
       $this->players->add($player);
 
       return $player;
+   }
+
+
+   public function getStart() {
+      return $this->start;
+   }
+
+   public function setStart($time) {
+      $this->start = $time;
+   }
+
+   public function getFinish() {
+      return $this->finish;
+   }
+
+   public function setFinish($time) {
+      $this->finish = $time;
+   }
+
+   public function setStartAsNow() {
+      $this->setStart(new DateTime('now'));
+   }
+
+   public function setFinishAsNow() {
+      $this->setFinish(new DateTime('now'));
    }
 
 }

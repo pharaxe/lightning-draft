@@ -20,9 +20,9 @@ class User
    private $id;
 
    /**
-    * @ORM\Column(type="string", length=255)
+    * @ORM\Column(type="string", length=36)
     */
-   private $name;
+   private $uuid;
 
    /**
     * @ORM\OneToMany(targetEntity="Player", mappedBy="user", cascade={"persist"})
@@ -39,12 +39,12 @@ class User
       return $this->id;
    }
 
-   public function getName() {
-      return $this->name;
+   public function getUUID() {
+      return $this->uuid;
    }
 
-   public function setName($name) {
-      $this->name = $name;
+   public function setUUID($uuid) {
+      $this->uuid = $uuid;
    }
 
    public function getPlayers() {

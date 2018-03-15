@@ -69,15 +69,6 @@ class Player
     */
    private $colors;
 
-   /**
-    * @ORM\Column(type="datetime", nullable=true)
-    */
-   private $start;
-
-   /**
-    * @ORM\Column(type="datetime", nullable=true)
-    */
-   private $finish;
 
    private $guilds; // TODO I want to store guilds by players once multiplayer drafts
 
@@ -163,27 +154,11 @@ class Player
       $this->guilds = $guilds;
    }
 
-   public function getStart() {
-      return $this->start;
-   }
-
-   public function setStart($time) {
-      $this->start = $time;
-   }
-
-   public function getFinish() {
-      return $this->finish;
-   }
-
-   public function setFinish($time) {
-      $this->finish = $time;
-   }
-
    public function setStartAsNow() {
-      $this->setStart(new DateTime('now'));
+      $this->getDraft()->setStartAsNow();
    }
 
    public function setFinishAsNow() {
-      $this->setFinish(new DateTime('now'));
+      $this->getDraft()->setFinishAsNow();
    }
 }
