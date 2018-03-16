@@ -29,8 +29,14 @@ class CardLibrary
       $this->container = $container;
    }
 
-   public function getRandomCards($colors = null, $limit = 3) {
-
+   public function getRandomCards(
+    $colors = null, 
+    $limit = 3, 
+    $getLand = false, 
+    $getColorless = false,
+    $rarity = array(),
+    $getSpells = false
+   ) {
       if ($colors && !$colors->isEmpty()) {
          $colorsToFind = []; 
          foreach ($colors as $color) {
@@ -53,23 +59,47 @@ class CardLibrary
             $colorsToExcludeIDs[] = $color['colorid'];
          }
 
+         $colorlessAllowed = $getColorless ? "TRUE" : "FALSE";
+
+         $yesLands = $getLand ? "TRUE" : "FALSE";
+         $noLands = !$getLand ? "TRUE" : "FALSE";
+
+         // if supplied with rarities, only allow cards with those rarities.
+         $anyRarity = empty($rarity) ? "TRUE" : "FALSE";
+
+         $yesSpells = $getSpells ? "TRUE" : "FALSE";
+
          $sql = <<<EOT
             SELECT `cards`.`cardid` 
             FROM `cards`
             LEFT JOIN `cards_identities` 
                ON (`cards`.cardid = `cards_identities`.cardid)
-            WHERE `cards_identities`.colorid NOT IN (?)
-            AND NOT EXISTS 
-               (SELECT * FROM `cards_identities` ci
-                WHERE 
-                 `cards`.`cardid` = ci.cardid AND
-                 ci.colorid IN (?))
+            JOIN `cards_types`
+               ON (`cards`.cardid = `cards_types`.cardid)
+            JOIN `types`
+               ON (`types`.typeid = `cards_types`.typeid)
+            LEFT JOIN `arts`
+               ON (arts.cardid = cards.cardid)
+            WHERE ((($yesSpells OR (`types`.name like 'creature')) OR $yesLands)
+             AND (($yesLands AND (`types`.name like 'land')) OR ($noLands AND (types.name not like 'land')))
+             AND ($anyRarity OR arts.rarity IN (?))
+             AND (
+                ($colorlessAllowed AND (`cards_identities`.colorid IS NULL))
+                OR (`cards_identities`.colorid NOT IN (?)
+                   AND NOT EXISTS 
+                     (SELECT * FROM `cards_identities` ci
+                      WHERE 
+                       `cards`.`cardid` = ci.cardid AND
+                       ci.colorid IN (?)))))
+            GROUP BY `cards`.cardid
             ORDER BY RAND() LIMIT $limit;
 EOT;
 
          $statement = $this->em->getConnection()->executeQuery($sql,
-            array($colorsToExcludeIDs, $colorsToExcludeIDs),
-            array(\Doctrine\DBAL\Connection::PARAM_INT_ARRAY,
+            array($rarity, $colorsToExcludeIDs, $colorsToExcludeIDs),
+            array(
+            \Doctrine\DBAL\Connection::PARAM_INT_ARRAY,
+            \Doctrine\DBAL\Connection::PARAM_INT_ARRAY,
             \Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
          );
 
@@ -139,7 +169,7 @@ EOT;
          }
       }
        */ 
-      if (in_array($data->layout, array("double-faced", "aftermath", "flip", "conspiracy", "plane", "meld", "split", "scheme", "phenomenon"))) {
+      if (in_array($data->layout, array("double-faced", "aftermath", "flip", "conspiracy", "plane", "meld", "split", "scheme", "phenomenon", "token"))) {
          // eventually, I might want to include some of these types of cards.
          echo 'skipping ' . $data->name . "because it's a " . $data->layout . " card\n";
          return;

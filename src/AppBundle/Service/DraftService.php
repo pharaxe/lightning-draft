@@ -55,9 +55,60 @@ class DraftService
 
    public function generatePackFor($player) {
        $cardManager = $this->container->get('AppBundle\Service\CardLibrary');
+       $landPick = false;
 
-       $colors = $player->getColors();
-       $cards = $cardManager->getRandomCards($colors);
+       $landCount = $player->getLandCount();
+       $cardCount = $player->getDeckSize();
+
+       if ($landCount < 1) {
+          if ($cardCount == 10) { // force land pick at pick 10
+             $landPick = true;
+          } else if ($cardCount >= 5) {
+             // after pick 5, 10% chance for a land pick.
+             $landPick = (rand(1, 10) == 1);
+          }
+       } 
+       
+       // wait till at least pick 10 for second land
+       if ($landCount < 2) {
+          if ($cardCount == 20) { // force second land pick at 20
+             $landPick = true;
+          } else if ($cardCount >= 15) {  // at least wait until pick 15
+             $landPick = (rand(1, 10) == 1);
+          }    
+       }
+
+       // determine rarity
+       if ($landPick) {
+          $rarities = array('mythic', 'rare', 'uncommon');
+       } else {
+          $diceRoll = rand(1, 20);
+
+          if ($diceRoll < 13) {
+             $rarities = array('common');
+          } else if ($diceRoll < 18) {
+             $rarities = array('uncommon');
+          } else if ($diceRoll >= 18) {
+             $rarities = array('rare');
+          } else if ($diceRoll == 20) {
+             $rarities = array('mythic');
+          }
+       }
+
+       // determine if to look for colorless cards.
+       $colorless = ($landPick || rand(1, 10) > 5);
+
+       // determine if we should include noncreatures.
+       $noncreatures = (rand(1, 10) > 6);
+
+       $cards = $cardManager->getRandomCards(
+          $colors = $player->getColors(),
+          $limit = 3,
+          $getLand = $landPick,
+          $allowColorless = $colorless,
+          $restrictRarities = $rarities,
+          $allowSpells = $noncreatures
+       );
 
        $player->getPack()->addCards($cards);
 

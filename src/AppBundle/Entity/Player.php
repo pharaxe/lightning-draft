@@ -182,4 +182,21 @@ class Player
    public function setFinishAsNow() {
       $this->getDraft()->setFinishAsNow();
    }
+
+   public function getLandCount() {
+      $deck = $this->getPicks();
+      $landCount = 0;
+
+      foreach ($this->getPicks()->getPicks() as $pick) {
+         if ($pick->getArt()->getCard()->isLand()) {
+            $landCount++;
+         }
+      }
+
+      return $landCount;
+   }
+
+   public function getDeckSize() {
+      return $this->getPicks()->getCount();
+   }
 }

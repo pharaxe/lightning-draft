@@ -234,7 +234,7 @@ class Card
 
    public function isLand() {
       foreach ($this->getTypes() as $type) {
-         if ($type->getName() == 'land')
+         if ($type->getName() === 'land')
             return true;
       }
       return false;
