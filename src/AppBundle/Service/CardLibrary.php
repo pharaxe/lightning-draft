@@ -130,13 +130,16 @@ EOT;
    {
       // find the card in the database
       
+      /* one day I'll implement double faced cards.
       if ($data->layout == 'double-faced') { 
          //only enter the main side of Double Faced cards.
          if ($data->name != $data->names[0]) {
             echo 'skipping ' . $data->name . "because it's the back or flip side of a card\n";
             return;
          }
-      } else if (in_array($data->layout, array("aftermath", "flip", "conspiracy", "plane", "meld", "split", "scheme", "phenomenon"))) {
+      }
+       */ 
+      if (in_array($data->layout, array("double-faced", "aftermath", "flip", "conspiracy", "plane", "meld", "split", "scheme", "phenomenon"))) {
          // eventually, I might want to include some of these types of cards.
          echo 'skipping ' . $data->name . "because it's a " . $data->layout . " card\n";
          return;

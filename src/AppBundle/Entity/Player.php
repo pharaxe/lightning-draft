@@ -44,6 +44,7 @@ class Player
    /**
     * @ORM\OneToOne(targetEntity="Pool", cascade={"persist"})
     * @ORM\JoinColumn(name="picksid", referencedColumnName="poolid")
+    * @JMS\Exclude();
     */
    private $picks;
 
@@ -96,10 +97,27 @@ class Player
       return $this->picks;
    }
 
+   /**
+    * @JMS\VirtualProperty
+    * @JMS\SerializedName("deck")
+    */
+   public function getSortedPicks() {
+      // TODO really I should be sorting by cmc when I pull from the DB.
+
+      $cards = $this->getPicks()->getCards();
+
+      usort($cards, array("AppBundle\Entity\Pick", "sortByCmc"));
+
+      return $cards;
+   }
+
    public function getPack() {
       return $this->pack;
    }
 
+   /**
+    * @JMS\Exclude();
+    */
    public function getPass() {
       return $this->pass;
    }
@@ -108,6 +126,9 @@ class Player
       $this->picks->addArt($art);
    }
 
+   /**
+    * @JMS\Exclude();
+    */
    public function getUser() {
       return $user;
    }

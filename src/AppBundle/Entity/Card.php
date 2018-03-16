@@ -120,6 +120,11 @@ class Card
    }
 
    public function getCmc() {
+      if ($this->isLand()) {
+         return $this->cmc - 1; // super big hack
+
+      }
+
       return $this->cmc;
    }
 

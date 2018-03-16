@@ -85,4 +85,31 @@ class Pick
       }
       return $this->pool = $pool;
    }
+
+   // TODO table inheritence would solve needing to repeat this function.
+   // I really shouldn't be sorting this often either.
+   public static function sortByCmc($n1, $n2) {
+      $n1 = $n1->getArt()->getCard();
+      $n2 = $n2->getArt()->getCard();
+
+      $n1cmc = $n1->getCmc();
+      $n2cmc = $n2->getCmc();
+
+      if ($n1->isLand()) {
+         $n1cmc = -1;
+      }
+
+      if ($n2->isLand()) {
+         $n2cmc = -1;
+      }
+
+      if (strpos($n1->getManaCost(), 'X') && $n1cmc != 0) { // nonartifact X spells should sort high
+         $n1cmc += 8;
+      }
+      if (strpos($n2->getManaCost(), 'X') && $n2cmc != 0) { 
+         $n2cmc += 8;
+      }
+
+      return ($n1cmc > $n2cmc) ? +1 : -1;
+   } 
 }
