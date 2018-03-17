@@ -3,5 +3,4 @@ app:
     type: annotation
 FOS:
     resource: "@AppBundle/Resources/config/routing.yml"
-    prefix: /api
     type: rest
