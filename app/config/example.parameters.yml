@@ -2,8 +2,8 @@
 parameters:
     database_host: 127.0.0.1
     database_port: null
-    database_name: roc
-    database_user: bsweedler
+    database_name: database
+    database_user: user
     database_password: password
     mailer_transport: smtp
     mailer_host: 127.0.0.1
