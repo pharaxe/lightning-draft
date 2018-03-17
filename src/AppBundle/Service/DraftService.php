@@ -61,7 +61,7 @@ class DraftService
        $cardCount = $player->getDeckSize();
 
        if ($landCount < 1) {
-          if ($cardCount == 10) { // force land pick at pick 10
+          if ($cardCount == 20) { // force land pick at pick 10
              $landPick = true;
           } else if ($cardCount >= 5) {
              // after pick 5, 10% chance for a land pick.
@@ -69,14 +69,11 @@ class DraftService
           }
        } 
        
-       // wait till at least pick 10 for second land
-       if ($landCount < 2) {
-          if ($cardCount == 20) { // force second land pick at 20
-             $landPick = true;
-          } else if ($cardCount >= 15) {  // at least wait until pick 15
-             $landPick = (rand(1, 10) == 1);
-          }    
-       }
+       // determine if to look for colorless cards.
+       $colorless = ($landPick || rand(1, 10) > 5);
+
+       // determine if we should include noncreatures.
+       $noncreatures = (rand(1, 10) > 6);
 
        // determine rarity
        if ($landPick) {
@@ -92,14 +89,10 @@ class DraftService
              $rarities = array('rare');
           } else if ($diceRoll == 20) {
              $rarities = array('mythic');
+             $colorless = false; // don't give silly artifact mythics
           }
        }
 
-       // determine if to look for colorless cards.
-       $colorless = ($landPick || rand(1, 10) > 5);
-
-       // determine if we should include noncreatures.
-       $noncreatures = (rand(1, 10) > 6);
 
        $cards = $cardManager->getRandomCards(
           $colors = $player->getColors(),

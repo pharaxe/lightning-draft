@@ -18,7 +18,7 @@ class Draft
    const STATUS_SETUP = 'setup';
    const STATUS_RUNNING = 'running';
    const STATUS_COMPLETED = 'completed';
-   const DECKSIZE_LIMIT = 25;
+   const DECKSIZE_LIMIT = 24;
 
    /**
     * @ORM\Column(type="integer", name="draftid")
