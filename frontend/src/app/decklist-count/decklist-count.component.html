@@ -1,4 +1,7 @@
 <div class="decksize">
-   <div class="decksize-amount">{{deck.length + 14 }} / 40 </div>
+   <div class="decksize-amount">
+      <div *ngIf="deck.length == 0; else elseBlock">0</div>
+      <template #elseBlock>{{deck.length + 14 }} </template> / 40
+   </div>
    <div class="decksize-cardslabel">Cards</div>
 </div>
