@@ -20,7 +20,7 @@ import {
             transform: 'translate3d(0,0,0)',
          })),
          transition('in <=> out', animate('500ms ease-in')),
-      ]),
+      ])]
 })
 export class FooterComponent implements AfterViewInit {
    public slideState: string = 'in';
