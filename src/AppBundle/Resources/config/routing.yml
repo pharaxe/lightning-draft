@@ -1,0 +1,35 @@
+cards:
+    type: rest
+    resource: AppBundle\Controller\CardController
+    prefix: /cards
+    name_prefix: cards_ 
+
+drafts:
+   type: rest
+   resource: AppBundle\Controller\DraftController
+
+players:
+   type: rest
+   parent: drafts
+   resource: AppBundle\Controller\PlayerController
+
+picks:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\PickController
+
+pack:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\PackController
+
+deck:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\DeckController
+
+colors:
+   parent: players
+   type: rest
+   resource: AppBundle\Controller\ColorController
+   name_prefix: colors_
