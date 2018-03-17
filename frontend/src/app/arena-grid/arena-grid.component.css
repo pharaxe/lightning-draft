@@ -126,6 +126,10 @@ app-footer {
       /* max-width: 50%; 
    }
    */
+
+   app-footer {
+      display: none;
+   }
 }
 
 @media (max-width: 480px) {
