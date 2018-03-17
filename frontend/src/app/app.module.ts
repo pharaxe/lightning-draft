@@ -33,6 +33,7 @@ import { CompletedScreenComponent } from './completed-screen/completed-screen.co
 import { DeckGridComponent } from './deck-grid/deck-grid.component';
 import { GuildIconDescriptionComponent } from './guild-icon-description/guild-icon-description.component';
 import { HintComponent } from './hint/hint.component';
+import { FooterComponent } from './footer/footer.component';
 
 @NgModule({
    declarations: [
@@ -55,7 +56,8 @@ import { HintComponent } from './hint/hint.component';
       CompletedScreenComponent,
       DeckGridComponent,
       GuildIconDescriptionComponent,
-      HintComponent
+      HintComponent,
+      FooterComponent
    ],
    entryComponents: [HintComponent],
    imports: [

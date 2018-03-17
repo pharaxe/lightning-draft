@@ -1,0 +1,48 @@
+.container {
+   overflow: hidden;
+}
+
+.footer {
+   position: relative;
+   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+   background-color: #ddd;
+   margin: 0;
+   padding: 0;
+}
+
+.thanks div, .legal-footer div  {
+   margin-left: 1em;
+   padding-top: .3em;
+   line-height: 1.4;
+}
+
+a {
+   cursor: pointer;
+   text-decoration: none;
+   font-weight: 700;
+}
+
+a:hover {
+
+}
+
+.tab {
+   text-align: center;
+   font-weight: 700;
+   position: absolute;
+   border: #ddd;
+   background-color: #ddd;
+   width: 50px;
+   height: 20px;
+   border-style: solid;
+   border-top-right-radius: 10px;
+   margin: 0 auto;
+   top: -20px;
+   z-index: -1;
+}
+
+
+.legal-footer {
+   background-color: #333;
+   color: #ddd;
+}
