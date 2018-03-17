@@ -1,0 +1,17 @@
+.info {
+   margin: 20px;
+   display: flex;
+   z-index: 0;
+}
+
+.options {
+    padding-left: 2em;
+   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+   line-height: 1.4;
+}
+
+@media (max-width: 1000px) {
+   .deck-grid {
+      display: none;
+   }
+}

@@ -1,0 +1,26 @@
+
+.guild-icon {
+   height: 10em;
+   width: 10em;
+   background-image: url('http://www.bensweedler.com/art/mana.svg');
+   background-repeat: no-repeat;
+   background-size: auto 700%;
+   /*background-size: contain;*/
+   //box-shadow: 1px 1px 1px #000;
+   //border: 1px;
+   vertical-align: middle;
+   margin: 0 auto;
+   padding: 0;
+}
+
+
+.WU { background-position: 0 50%; }
+.WB { background-position: 11.1% 50%; }
+.UB { background-position: 22.2% 50%; }
+.UR { background-position: 33.3% 50%; }
+.BR { background-position: 44.4% 50%; }
+.BG { background-position: 55.5% 50%; }
+.WR { background-position: 66.6% 50%; }
+.RG { background-position: 77.7% 50%; }
+.WG { background-position: 88.8% 50%; }
+.UG { background-position: 99.9% 50%; }

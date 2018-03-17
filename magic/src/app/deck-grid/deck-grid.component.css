@@ -1,0 +1,11 @@
+.cards {
+   display: flex;
+   flex-direction: row;
+   flex-wrap: wrap;
+   justify-content: space-around;
+}
+
+.cards app-card-detail {
+   margin-bottom: 5px;
+   flex: 0 1 200px;
+}

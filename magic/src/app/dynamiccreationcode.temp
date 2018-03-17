@@ -1,0 +1,27 @@
+      init
+      //this.pack.forEach(this.createCardComponent.bind(this));
+      //(<CardDetailComponent>componentRef.instance).card = the card you want to place in there
+      /*
+      */
+      //this.choices.forEach(this.assignCardToChoiceSlot.bind(this));
+
+      afterview
+      /*
+      let componentFactory = this.resolver.resolveComponentFactory(CardDetailComponent);
+      console.log(componentFactory);
+      console.log(this.choiceHost);
+      let viewContainerRef = this.choiceHost.viewContainerRef;
+      let componentRef = viewContainerRef.createComponent(componentFactory);
+      //(<CardDetailComponent>componentRef.instance).observe(card);
+       */
+
+      /*
+   createCardComponent() {
+      const factory: ComponentFactory = this.resolver.resolveComponentFactory(CardDetailComponent);
+      this.componentRef = this.container.createComponent(factory);
+   }
+       */
+
+   ngOnDestroy() {
+      //this.componentRef.destroy();
+   }

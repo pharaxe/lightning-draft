@@ -1,0 +1,21 @@
+<div [@slideIn]="slideState" class="info">
+   <app-guild-icon [colors]="draft.guild"> </app-guild-icon>
+   <div class="options">
+      <p> Thanks for playing! </p>
+      <ul>
+      <li>
+      You can take a <a href="{{survey_url}}{{draft.draftid}}">quick survey</a> to help me improve the app.
+      </li>
+      <li>
+      You can print out your deck using <a href="{{getPrintUrl()}}">MTG Press</a>.
+      </li>
+      <li>
+      You can <button ngxClipboard [cbContent]="getDecklistText()"  (cbOnSuccess)="copiedSuccessfully()">copy</button> the decklist to your clipboard.
+      </li>
+     </ul>
+   </div>
+</div>
+
+<div class="deck-grid" [@fadeDeck]="fadeState">
+   <app-deck-grid></app-deck-grid>
+</div>

@@ -1,0 +1,26 @@
+#toolbar {
+   display: flex;
+   align-items: space-between;
+}
+
+.draft {
+   align-self: flex-start;
+
+
+}
+
+.filler {
+   flex-grow: 1;
+}
+
+.logins {
+   align-self: flex-end;
+}
+
+button {
+
+   border: 0;
+   background: none;
+   box-shadow: none;
+   border-radius: 0px;
+}

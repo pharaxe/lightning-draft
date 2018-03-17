@@ -1,0 +1,127 @@
+.arena {
+   display: flex;
+   flex-direction: column;
+   min-height: 100vh;
+}
+
+.arena-body {
+   display: flex;
+   flex: 1;
+}
+
+.arena-content {
+   flex: 1;
+}
+
+
+.arena-header{
+   color: #ddd;
+   font-size: 2em;
+   font-family: sans-serif;
+   font-style: italic;
+   background-color: #333;
+   transform: translate3d(0,0,0);
+   z-index: 1;
+}
+
+.arena-header > span {
+   padding-left: 2em;
+}
+
+.arena-header a {
+  color: inherit; 
+  text-decoration: inherit; /* no underline */
+}
+
+.arena-header span {
+   line-height: 50px;
+   padding-left: 10px;
+}
+
+
+.booster {
+   margin-top: 10px;
+}
+
+.decklist-col {
+   background-color: #ddd;
+   flex: 0 1 25%; 
+   max-height:100%;
+   margin-left: auto;
+   display: flex;
+   flex-direction: column;
+   box-shadow: inset 0 0 1em rgba(85,85,85,.5);
+}
+
+.decklist-header {
+   text-align: center;
+   flex: 0;
+}
+
+.decklist {
+   overflow-x: hidden;
+   overflow-y: auto;
+   height: 1px;  // weird but works in tandem with flex and min-height
+   min-height: min-content;
+   flex: 1;
+}
+
+.decklist-count {
+   align-self: center;
+   flex: 0;
+}
+
+.decklist-completed {
+   overflow: visible;
+   min-height: min-content;
+   flex-grow: 0;
+}
+
+/*
+.decklist-footer {
+   flex: 1;
+   display: block;
+}
+*/
+
+@media (max-width: 1000px) {
+   .arena-body {
+      flex-direction: column;
+      flex: 1;
+      align-items: center;
+   }
+
+   .arena-content {
+      flex: 1;
+   }
+
+   .decklist-col {
+      margin: 0;
+      margin-top: 5px;
+      width: 45%;
+   }
+
+   .decklist {
+      overflow: visible;
+      height: 100%;
+      flex: 1;
+   }
+
+   /*
+   .decklist {
+      /* max-width: 50%; 
+   }
+   */
+}
+
+@media (max-width: 480px) {
+   .decklist-col {
+      width: 100%;
+   }
+}
+
+.choose-label {
+   font-size: 4em;
+   margin: 0 auto;
+   text-align: center;
+}
