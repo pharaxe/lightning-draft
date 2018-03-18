@@ -107,7 +107,7 @@ class Art
    }
 
    public function getFullURL() {
-      return "http://bensweedler.com/art/" . $this->getMultiverseid() . ".jpg";
+      return "https://img.lightningdraft.online/" . $this->getMultiverseid() . ".jpg";
    }
 
    public static function SortByReleaseDate($a, $b) {

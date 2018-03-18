@@ -88,6 +88,5 @@ export class CompletedScreenComponent implements OnInit, AfterViewInit {
    }
 
    copiedSuccessfully() {
-      console.log('here');
    }
 }

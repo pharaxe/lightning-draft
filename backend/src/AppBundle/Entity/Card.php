@@ -218,7 +218,7 @@ class Card
    public function getUrl() {
       $art = $this->getMiddleArt();
 
-      return 'https://bensweedler.com/art/' . $art->getMultiverseid() . '.jpg';
+      return 'https://img.lightningdraft.online/' . $art->getMultiverseid() . '.jpg';
    }
 
    /**

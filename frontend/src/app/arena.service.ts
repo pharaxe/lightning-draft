@@ -23,7 +23,7 @@ export class ArenaService {
    draft: Draft;
    private draftSubject:Subject<Draft> = new Subject<Draft>();
    private guildSubject:Subject<Color[][]> = new Subject<Color[][]>();
-   public api_url = 'http://api.lightningdraft.online';
+   public api_url = 'https://api.lightningdraft.online';
    public random_url = '/cards/random';
    public draft_url = '/drafts';
    public player_url = '/players';
@@ -42,10 +42,15 @@ export class ArenaService {
       this.deck = [];
       this.pack = [];
 
-      this.uuid = this.persistenceService.get('lightning-draft-uuid', StorageType.LOCAL);
-      if (this.uuid == undefined) {
-         this.uuid = UUID.UUID(); 
-         this.persistenceService.set('lightning-draft-uuid', this.uuid, {type: StorageType.LOCAL });
+      try {
+         this.uuid = this.persistenceService.get('lightning-draft-uuid', StorageType.LOCAL);
+         if (this.uuid == undefined) {
+            let newUUID =UUID.UUID(); 
+            this.persistenceService.set('lightning-draft-uuid', newUUID, {type: StorageType.LOCAL });
+            this.uuid = this.persistenceService.get('lightning-draft-uuid', StorageType.LOCAL);
+         }
+      } catch (err) {
+          // uuid is optional   
       }
    }
 
@@ -120,7 +125,12 @@ export class ArenaService {
        */
 
    sendGuild(colors) {
-      this.http.post( this.api_url + this.draft_url, {"colors" : colors, "uuid": this.uuid}).subscribe(
+       let data:any = {"colors": colors};
+       if (this.getUUID()) {
+          data.uuid = this.getUUID();
+       }
+
+      this.http.post( this.api_url + this.draft_url, data).subscribe(
         suc => {
            this.setupDraft(suc);
         },
@@ -159,7 +169,6 @@ export class ArenaService {
       newDraft.guild = colors;
 
       // add basic lands to deck.
-      console.log(basic_lands);
       for (var i = newDraft.guild.length - 1; i >= 0; i--) {
          deck.splice(0, 0, basic_lands[newDraft.guild[i].name]);
       }
