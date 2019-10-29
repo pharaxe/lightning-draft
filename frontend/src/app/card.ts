@@ -48,26 +48,26 @@ export const basic_lands = {
    'white': new Card({
       'cmc': -1,
       'name': '8 Plains',
-      'url': 'https://bensweedler.com/art/plains.jpg',
+      'url': 'https://img.lightningdraft.online/plains.jpg',
       'mana_cost': ''}),
    'blue': new Card({
       'cmc': -1,
       'name': '8 Islands',
-      'url': 'https://bensweedler.com/art/island.jpg',
+      'url': 'https://img.lightningdraft.online/island.jpg',
       'mana_cost': ''}),
    'black': new Card({
       'cmc': -1,
       'name': '8 Swamps',
-      'url': 'https://bensweedler.com/art/swamp.jpg',
+      'url': 'https://img.lightningdraft.online/swamp.jpg',
       'mana_cost': ''}),
    'red': new Card({
       'cmc': -1,
       'name': '8 Mountains',
-      'url': 'https://bensweedler.com/art/mountain.jpg',
+      'url': 'https://img.lightningdraft.online/mountain.jpg',
       'mana_cost': ''}),
    'green': new Card({
       'cmc': -1,
       'name': '8 Forests',
-      'url': 'https://bensweedler.com/art/forest.jpg',
+      'url': 'https://img.lightningdraft.online/forest.jpg',
       'mana_cost': ''}),
 }
