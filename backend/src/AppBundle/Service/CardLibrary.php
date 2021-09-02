@@ -85,8 +85,7 @@ class CardLibrary
              AND ($anyRarity OR arts.rarity IN (?))
              AND (
                 ($colorlessAllowed AND (`cards_identities`.colorid IS NULL))
-                OR (`cards_identities`.colorid NOT IN (?)
-                   AND NOT EXISTS 
+                OR (NOT EXISTS 
                      (SELECT * FROM `cards_identities` ci
                       WHERE 
                        `cards`.`cardid` = ci.cardid AND
@@ -94,12 +93,10 @@ class CardLibrary
             GROUP BY `cards`.cardid
             ORDER BY RAND() LIMIT $limit;
 EOT;
-
          $statement = $this->em->getConnection()->executeQuery($sql,
-            array($rarity, $colorsToExcludeIDs, $colorsToExcludeIDs),
+            array($rarity, $colorsToExcludeIDs),
             array(
-            \Doctrine\DBAL\Connection::PARAM_INT_ARRAY,
-            \Doctrine\DBAL\Connection::PARAM_INT_ARRAY,
+            \Doctrine\DBAL\Connection::PARAM_STR_ARRAY,
             \Doctrine\DBAL\Connection::PARAM_INT_ARRAY)
          );
 
